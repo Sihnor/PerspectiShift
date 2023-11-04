@@ -113,7 +113,7 @@
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
+                    "groups": "",
                     "action": "Look3D",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -22,18 +22,21 @@ namespace Player.Scripts
         public float DragForce = 7;
         public LayerMask Ground;
         
+        protected EViewMode ViewMode;
         protected bool IsGrounded;
         
         [SerializeField] public Collider PlayerCollider;
-        
         protected Rigidbody Rigidbody;
 
-        protected EViewMode ViewMode;
+        
         
         // Start is called before the first frame update
         public virtual void Start()
         {
             this.Rigidbody = GetComponent<Rigidbody>();
+            
+            Cursor.lockState = CursorLockMode.Locked;
+            this.ViewMode = EViewMode.TwoDimension;
 
             if (this.Rigidbody)
             {
@@ -46,6 +49,10 @@ namespace Player.Scripts
         public abstract void OnJump(InputAction.CallbackContext _context);
         
         protected abstract void SpeedControl();
-        
+
+        public void SetViewMode(EViewMode _newMode)
+        {
+            this.ViewMode = _newMode;
+        }
     }
 }
