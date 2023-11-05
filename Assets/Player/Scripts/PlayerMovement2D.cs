@@ -6,6 +6,26 @@ namespace Player.Scripts
 {
     public class PlayerMovement2D : Movement
     {
+        public override EViewMode ViewMode
+        {
+            set
+            {
+                if (value == EViewMode.ThreeDimension)
+                {
+                    this.RotationBeforeSwitch = transform.rotation;
+                }
+
+                if (value == EViewMode.TwoDimension)
+                {
+                    transform.rotation = RotationBeforeSwitch;
+                }
+
+                base.ViewMode = value;
+            }
+        }
+
+        
+
         // Start is called before the first frame update
         public override void Start()
         {
@@ -15,7 +35,7 @@ namespace Player.Scripts
         // Update is called once per frame
         void Update()
         {
-            if (this.ViewMode != EViewMode.TwoDimension) return;
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             SpeedControl();
             
@@ -24,10 +44,13 @@ namespace Player.Scripts
     
         private void FixedUpdate()
         {
-            if (this.ViewMode != EViewMode.TwoDimension) return;
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             
-            Vector3 velocity = new Vector3(this.MovementInput.x * this.MoveSpeed * (1/Time.deltaTime), this.Rigidbody.velocity.y ,0);
+            //Vector3 velocity = new Vector3(this.MovementInput.x * this.MoveSpeed * (1/Time.deltaTime), this.Rigidbody.velocity.y ,0);
+
+            Vector3 velocity = transform.right * (this.MovementInput.x * this.MoveSpeed * (1 / Time.deltaTime));
+            velocity.y = this.Rigidbody.velocity.y;
             
             if (!this.IsGrounded)
             {
@@ -40,7 +63,7 @@ namespace Player.Scripts
 
         public override void OnMove(InputAction.CallbackContext _context)
         {
-            if (this.ViewMode != EViewMode.TwoDimension) return;
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
 
             Vector2 contextVector = _context.ReadValue<Vector2>();
 
@@ -49,7 +72,7 @@ namespace Player.Scripts
 
         public override void OnJump(InputAction.CallbackContext _context)
         {
-            if (this.ViewMode != EViewMode.TwoDimension) return;
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             if (_context.performed)
             {
@@ -67,7 +90,7 @@ namespace Player.Scripts
 
         protected override void SpeedControl()
         {
-            if (this.ViewMode != EViewMode.TwoDimension) return;
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             
             Vector3 rigidbodyVelocity = new Vector3(this.Rigidbody.velocity.x, 0, 0);
@@ -83,7 +106,7 @@ namespace Player.Scripts
         
         private void SetDragFactor()
         {
-            if (this.ViewMode != EViewMode.TwoDimension) return;
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             this.IsGrounded = Physics.Raycast(transform.position, Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.Ground);
 

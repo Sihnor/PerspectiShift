@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DimensionProtal : MonoBehaviour
 {
-    [SerializeField] public CameraSelecter DimensionManager;
+    [SerializeField] public Player.Scripts.CameraSelecter DimensionManager;
 
     [SerializeField] public int Cooldown = 5;
 
