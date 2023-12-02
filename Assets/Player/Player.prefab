@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 7283766526628283064}
+  PlayerInput: {fileID: 2543047897877328931}
 --- !u!1 &4838906249318461636
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +386,7 @@ MonoBehaviour:
   Camera: {fileID: 8515433123296120957}
   RotationSpeed: 5
   Player: {fileID: 7283766526628283064}
+  PlayerInput: {fileID: 2543047897877328931}
 --- !u!1 &8808957379273969864
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 0082d46736b8e7b4681cb57e84ab4a9f, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -597,7 +599,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4925098722905588773}
         m_TargetAssemblyTypeName: PlayerCameraControl, Assembly-CSharp
-        m_MethodName: OnLook
+        m_MethodName: Look
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -653,7 +655,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2210728711726597}
         m_TargetAssemblyTypeName: DimensionControl, Assembly-CSharp
-        m_MethodName: OnDimensionGearUse
+        m_MethodName: DimensionGearUse
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -669,7 +671,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8216448549728736314}
         m_TargetAssemblyTypeName: THCameraControl, Assembly-CSharp
-        m_MethodName: OnRotatePlane
+        m_MethodName: SwitchPlane
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

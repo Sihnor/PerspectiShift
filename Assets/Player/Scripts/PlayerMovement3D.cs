@@ -14,33 +14,44 @@ namespace Player.Scripts
                 if (value == EViewMode.TwoDimension)
                 {
                     this.RotationBeforeSwitch = transform.rotation;
-                    Debug.Log($"{transform.rotation.eulerAngles.ToString()}");
                 }
-                
+
                 if (value == EViewMode.ThreeDimension)
                 {
                     transform.rotation = RotationBeforeSwitch;
                 }
-                
+
                 base.ViewMode = value;
             }
         }
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            this.MoveAction = this.PlayerInput.currentActionMap.FindAction("Move3D");
+            this.JumpAction = this.PlayerInput.currentActionMap.FindAction("Jump3D");
+        }
+
         // Start is called before the first frame update
-        public override void Start()
+        protected override void Start()
         {
             base.Start();
+
+            this.MoveAction.performed += Move;
+            this.JumpAction.started += Jump;
+            this.MoveAction.canceled += EndMove;
+            this.JumpAction.canceled += EndJump;
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
 
             SpeedControl();
 
             SetDragFactor();
-            
         }
 
         private void FixedUpdate()
@@ -50,33 +61,37 @@ namespace Player.Scripts
             float scalar = this.MoveSpeed * (1 / Time.deltaTime);
             Vector3 velocity = this.MovementInput.y * scalar * transform.forward + this.MovementInput.x * scalar * transform.right;
             velocity.y = this.Rigidbody.velocity.y;
-            
+
             if (!this.IsGrounded) velocity.x *= 0.1f;
             if (!this.IsGrounded) velocity.z *= 0.1f;
-            
+
             this.Rigidbody.AddForce(velocity);
         }
 
-        public override void OnMove(InputAction.CallbackContext _context)
+        public override void Move(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
 
             this.MovementInput = _context.ReadValue<Vector2>();
         }
 
-        public override void OnJump(InputAction.CallbackContext _context)
+        public override void EndMove(InputAction.CallbackContext _context)
+        {
+            this.MovementInput = _context.ReadValue<Vector2>();
+        }
+
+        public override void Jump(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
 
-            if (_context.performed)
-            {
-                this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
-            }
+            this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
+        }
 
-            if (_context.canceled)
-            {
-                this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed, 0), ForceMode.Impulse);
-            }
+        public override void EndJump(InputAction.CallbackContext _context)
+        {
+            if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
+
+            this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed, 0), ForceMode.Impulse);
         }
 
         protected override void SpeedControl()

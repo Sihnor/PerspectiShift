@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,28 +9,30 @@ namespace Player.Scripts
 {
     public class TPCameraControl : MonoBehaviour, IViewMode
     {
+        [SerializeField] public Transform Player;
+
+        [SerializeField] private PlayerInput PlayerInput;
+
+        private InputAction SwitchPlaneAction;
+
         public EViewMode ViewMode { get; set; }
 
-        [SerializeField] public Transform Player;
+        private void Awake()
+        {
+            this.SwitchPlaneAction = this.PlayerInput.currentActionMap.FindAction("SwitchPlane");
+        }
 
         // Start is called before the first frame update
         void Start()
         {
+            this.SwitchPlaneAction.started += SwitchPlane;
         }
 
-        // Update is called once per frame
-        void Update()
+        public void SwitchPlane(InputAction.CallbackContext _context)
         {
-        }
+            if (this.ViewMode == EViewMode.ThreeDimension) return;
 
-        public void OnRotatePlane(InputAction.CallbackContext _context)
-        {
-            if (!_context.performed || this.ViewMode == EViewMode.ThreeDimension)
-            {
-                return;
-            }
-
-            Player.transform.Rotate(Vector3.up, 90 * _context.ReadValue<Vector2>().x);
+            this.Player.transform.Rotate(Vector3.up, 90 * _context.ReadValue<Vector2>().x);
         }
     }
 }

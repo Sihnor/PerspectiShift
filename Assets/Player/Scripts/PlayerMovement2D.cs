@@ -24,16 +24,27 @@ namespace Player.Scripts
             }
         }
 
-        
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            this.MoveAction = this.PlayerInput.currentActionMap.FindAction("Move2D");
+            this.JumpAction = this.PlayerInput.currentActionMap.FindAction("Jump2D");
+        }
 
         // Start is called before the first frame update
-        public override void Start()
+        protected override void Start()
         {
             base.Start();
+
+            this.MoveAction.performed += Move;
+            this.JumpAction.performed += Jump;
+            this.MoveAction.canceled += EndMove;
+            this.JumpAction.canceled += EndJump;
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
@@ -45,7 +56,6 @@ namespace Player.Scripts
         private void FixedUpdate()
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
-            
             
             //Vector3 velocity = new Vector3(this.MovementInput.x * this.MoveSpeed * (1/Time.deltaTime), this.Rigidbody.velocity.y ,0);
 
@@ -61,16 +71,19 @@ namespace Player.Scripts
             this.Rigidbody.AddForce(velocity);
         }
 
-        public override void OnMove(InputAction.CallbackContext _context)
+        public override void Move(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
 
-            Vector2 contextVector = _context.ReadValue<Vector2>();
-
-            this.MovementInput = contextVector;
+            this.MovementInput = _context.ReadValue<Vector2>();
         }
 
-        public override void OnJump(InputAction.CallbackContext _context)
+        public override void EndMove(InputAction.CallbackContext _context)
+        {
+            this.MovementInput = _context.ReadValue<Vector2>();
+        }
+        
+        public override void Jump(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
@@ -78,9 +91,11 @@ namespace Player.Scripts
             {
                 this.Rigidbody.AddForce(new Vector3(0,this.JumpSpeed,0), ForceMode.Impulse);
             }
-            
-            // Cancel the jump 
-            if (!_context.canceled) return;
+        }
+
+        public override void EndJump(InputAction.CallbackContext _context)
+        {
+            if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             //this.Rigidbody.AddForce(new Vector3(0,-this.JumpSpeed,0), ForceMode.Impulse);
             Vector3 velocity = this.Rigidbody.velocity;

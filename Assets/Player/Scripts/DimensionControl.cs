@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Player.Scripts
-{ 
+{
     public class DimensionControl : MonoBehaviour
     {
         [SerializeField] public CameraSelecter DimensionManager;
@@ -15,6 +16,19 @@ namespace Player.Scripts
 
         [SerializeField] public bool HasDimensionGear;
 
+        private PlayerInput PlayerInput;
+        private InputAction DimensionGearAction;
+
+        private void Awake()
+        {
+            this.PlayerInput = GetComponent<PlayerInput>();
+            this.DimensionGearAction = this.PlayerInput.currentActionMap.FindAction("UseDimensionGear");
+        }
+
+        private void Start()
+        {
+            this.DimensionGearAction.started += DimensionGearUse;
+        }
 
         public void CollectDimensionGear()
         {
@@ -26,15 +40,14 @@ namespace Player.Scripts
             this.HasDimensionGear = false;
         }
 
-        public void OnDimensionGearUse(InputAction.CallbackContext _context)
+        public void DimensionGearUse(InputAction.CallbackContext _context)
         {
-            if (_context.performed)
-            {
-                if (TimeForNextSwitch > Time.time) return;
+            if (!this.HasDimensionGear) return;
+                        
+            if (this.TimeForNextSwitch > Time.time) return;
 
-                DimensionManager.OnDimensionSwitch();
-                TimeForNextSwitch = Time.time + Cooldown;
-            }
+            this.DimensionManager.OnDimensionSwitch();
+            this.TimeForNextSwitch = Time.time + this.Cooldown;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,8 +25,17 @@ namespace Player.Scripts
         [SerializeField] public Collider PlayerCollider;
         protected Rigidbody Rigidbody;
         
+        protected PlayerInput PlayerInput;
+        protected InputAction MoveAction;
+        protected InputAction JumpAction;
+
+        protected virtual void Awake()
+        {
+            this.PlayerInput = GetComponent<PlayerInput>();
+        }
+
         // Start is called before the first frame update
-        public virtual void Start()
+        protected virtual void Start()
         {
             this.Rigidbody = GetComponent<Rigidbody>();
             
@@ -36,11 +46,15 @@ namespace Player.Scripts
             {
                 this.Rigidbody.freezeRotation = true;
             }
+            
+            
         }
 
-        public abstract void OnMove(InputAction.CallbackContext _context);
+        public abstract void Move(InputAction.CallbackContext _context);
+        public abstract void EndMove(InputAction.CallbackContext _context);
         
-        public abstract void OnJump(InputAction.CallbackContext _context);
+        public abstract void Jump(InputAction.CallbackContext _context);
+        public abstract void EndJump(InputAction.CallbackContext _context);
         
         protected abstract void SpeedControl();
     }
