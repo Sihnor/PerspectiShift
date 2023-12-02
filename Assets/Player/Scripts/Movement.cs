@@ -40,7 +40,7 @@ namespace Player.Scripts
             this.Rigidbody = GetComponent<Rigidbody>();
             
             Cursor.lockState = CursorLockMode.Locked;
-            this.ViewMode = Scripts.EViewMode.TwoDimension;
+            this.ViewMode = Scripts.EViewMode.ThreeDimension;
 
             if (this.Rigidbody)
             {

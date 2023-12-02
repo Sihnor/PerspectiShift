@@ -26,6 +26,8 @@ namespace Player.Scripts
         void Start()
         {
             this.SwitchPlaneAction.started += SwitchPlane;
+
+            this.ViewMode = EViewMode.ThreeDimension;
         }
 
         public void SwitchPlane(InputAction.CallbackContext _context)

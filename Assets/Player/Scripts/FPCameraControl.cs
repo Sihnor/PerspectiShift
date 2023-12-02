@@ -38,6 +38,8 @@ namespace Player.Scripts
         {
             this.LookAction.performed += Look;
             this.LookAction.canceled += EndLook;
+            
+            this.ViewMode = EViewMode.ThreeDimension;
         }
 
         // Update is called once per frame
