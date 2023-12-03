@@ -38,6 +38,7 @@ namespace Player.Scripts
         protected virtual void Start()
         {
             this.Rigidbody = GetComponent<Rigidbody>();
+            this.PlayerCollider = GetComponentInChildren<MeshCollider>();
             
             Cursor.lockState = CursorLockMode.Locked;
             this.ViewMode = Scripts.EViewMode.ThreeDimension;
