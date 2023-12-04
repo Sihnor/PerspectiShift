@@ -395,7 +395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6ca6d3d31e09d8a48a39bc839cbaba47, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -974,33 +974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2cf948bf7420aa468dd4271e18669ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1608068350 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7969855736051945310, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
-  m_PrefabInstance: {fileID: 6186082980908099705}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1608068354
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1608068350}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 924217788135971773, guid: edc917d89bf21144e80f9dda307e77f8, type: 3}
 --- !u!1001 &1825325348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1241,7 +1214,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3623440732441572405, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.38
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 3623440732441572405, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1274,10 +1247,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7969855736051945310, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1608068354}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
