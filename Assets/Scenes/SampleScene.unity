@@ -228,6 +228,10 @@ PrefabInstance:
       value: LightSource
       objectReference: {fileID: 0}
     - target: {fileID: 7403947693883201955, guid: 3a3d7a4cffa974a49962e3453d63a190, type: 3}
+      propertyPath: ShadowMeshMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: c0d1d3fe553957d46a5bf16da46c4ff7, type: 2}
+    - target: {fileID: 7403947693883201955, guid: 3a3d7a4cffa974a49962e3453d63a190, type: 3}
       propertyPath: ShadowLayerMask.m_Bits
       value: 2147483648
       objectReference: {fileID: 0}

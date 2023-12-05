@@ -8,36 +8,40 @@ using UnityEngine;
 public class LightControl : MonoBehaviour
 {
     public float LightBeamRange = 0;
-    public float LightSpotAngle = 0;
     public bool IsLightOn = false;
 
     private Light TempLight;
 
-    //[SerializeField] private Transform StartRayPosition;
     private Vector3 LightPosition;
 
-    private bool NurEinmal = false;
+    private GameObject Shadow;
+    private Mesh ShadowMesh;
     
+    private MeshCollider ShadowCollider;
+    private MeshFilter ShadowMeshFilter;
+
+    private MeshRenderer ShadowMeshRenderer;
+
+    public Material ShadowMeshMaterial;
+
     // Start is called before the first frame update
     private void Awake()
     {
         this.TempLight = GetComponentInChildren<Light>();
         this.LightPosition = transform.GetChild(1).position;
         this.LightBeamRange = this.TempLight.range;
-        this.LightSpotAngle = this.TempLight.spotAngle;
+
+        this.Shadow = new GameObject("CustomCollider");
+        this.ShadowCollider = this.Shadow.AddComponent<MeshCollider>();
+        this.ShadowMeshFilter = this.Shadow.AddComponent<MeshFilter>();
+        //
+        this.ShadowMeshRenderer = this.Shadow.AddComponent<MeshRenderer>();
+        this.ShadowMeshRenderer.material = this.ShadowMeshMaterial;
+        //
+        this.ShadowCollider.convex = true;
+        this.ShadowCollider.cookingOptions = MeshColliderCookingOptions.CookForFasterSimulation;
     }
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    
     private void FixedUpdate()
     {
         if (this.IsLightOn) RaycastFunction();
@@ -46,36 +50,89 @@ public class LightControl : MonoBehaviour
     private void RaycastFunction()
     {
         // Raycast to Get only ShadowWall and ShadowObject
-        RaycastHit[] raycastHit = Physics.RaycastAll(this.LightPosition, transform.forward, this.LightBeamRange, 
+        RaycastHit[] raycastHit = Physics.RaycastAll(this.LightPosition, transform.forward, this.LightBeamRange,
             ((1 << LayerMask.NameToLayer("ShadowWall")) | (1 << LayerMask.NameToLayer("ShadowObject"))));
+
         
-        if (!CheckIfWall(raycastHit)) return;
+        if (!CheckIfLayerHit(raycastHit, LayerMask.NameToLayer("ShadowWall"))) return;
+        if(!CheckIfLayerHit(raycastHit, LayerMask.NameToLayer("ShadowObject"))) return;
         
-        RaycastHit objectHit = GetShadowObjectHit(raycastHit);
-        if (objectHit.collider == null) return;
         
+        RaycastHit objectHit = GetLayerObjectHit(raycastHit, LayerMask.NameToLayer("ShadowObject"));
 
         Vector3[] meshLocalVertices = objectHit.collider.gameObject.GetComponent<MeshFilter>().mesh.vertices;
-        
-        List<Vector3> meshWorldVertices = new List<Vector3>();
-        
 
-        foreach (Vector3 point in meshLocalVertices)
+        Vector3[] meshWorldVertices = ConvertLocalToWorldVertices(meshLocalVertices, objectHit.collider.transform);
+        
+        Vector3[] verticesOnWall = RemoveDuplicates(ComputeVerticesOnWall(meshWorldVertices));
+
+
+
+        Mesh shadowMesh = new Mesh();
+        
+        int[] triangles = new int[(verticesOnWall.Length - 2) * 3];
+
+        for (int i = 0; i < verticesOnWall.Length - 2; i++)
         {
-            Matrix4x4 localToWorld = objectHit.collider.transform.localToWorldMatrix;
-            Vector3 worldVertex = localToWorld.MultiplyPoint3x4(point);
-            
-            meshWorldVertices.Add(worldVertex);
+            triangles[i * 3] = 0;
+            triangles[i * 3 + 1] = i + 1;
+            triangles[i * 3 + 2] = i + 2;
         }
 
-        List<Vector3> verticesOnWall = new List<Vector3>();
+        shadowMesh.vertices = verticesOnWall;
+        shadowMesh.triangles = triangles;
         
-        // Get Points on Wall
-        foreach (Vector3 point in meshWorldVertices)
+        shadowMesh.RecalculateNormals();
+
+        this.ShadowMeshFilter.mesh = shadowMesh;
+
+        this.ShadowCollider.sharedMesh = shadowMesh;
+    }
+
+    private bool CheckIfLayerHit(IEnumerable<RaycastHit> _raycastHits, int numberOfLayer)
+    {
+        bool isThereALayer = false;
+
+        foreach (RaycastHit hit in _raycastHits)
+        {
+            if (hit.collider.gameObject.layer == numberOfLayer) isThereALayer = true;
+        }
+
+        return isThereALayer;
+    }
+    
+    RaycastHit GetLayerObjectHit(IEnumerable<RaycastHit> _raycastHits, int numberOfLayer)
+    {
+        foreach (RaycastHit hit in _raycastHits)
+        {
+            if (hit.collider.gameObject.layer == numberOfLayer) return hit;
+        }
+
+        return new RaycastHit();
+    }
+    
+    private Vector3[] ConvertLocalToWorldVertices(Vector3[] _meshWorldVertices, Transform _objectTransform)
+    {
+        List<Vector3> listOfVertices = new List<Vector3>();
+        
+        foreach (Vector3 point in _meshWorldVertices)
+        {
+            Matrix4x4 localToWorld = _objectTransform.localToWorldMatrix;
+            Vector3 worldVertex = localToWorld.MultiplyPoint3x4(point);
+
+            listOfVertices.Add(worldVertex);
+        }
+
+        return listOfVertices.ToArray();
+    }
+    
+    private Vector3[] ComputeVerticesOnWall(Vector3[] _meshWorldVertices)
+    {
+        List<Vector3> listOfVertices = new List<Vector3>();
+        
+        foreach (Vector3 point in _meshWorldVertices)
         {
             Vector3 vectorLightToVertex = point - this.LightPosition;
-            
-            //newVertices.Add(vectorLightToVertex);
 
             RaycastHit hit;
             Physics.Raycast(this.LightPosition, vectorLightToVertex.normalized, out hit, this.LightBeamRange, (1 << LayerMask.NameToLayer("ShadowWall")));
@@ -83,64 +140,30 @@ public class LightControl : MonoBehaviour
             if (hit.collider != null)
             {
                 Debug.DrawLine(this.LightPosition, hit.point, Color.magenta, .01f);
-                verticesOnWall.Add(hit.point);
+                listOfVertices.Add(hit.point);
             }
         }
 
-        foreach (var VARIABLE in verticesOnWall)
+        return listOfVertices.ToArray();
+    }
+
+    private Vector3[] RemoveDuplicates(Vector3[] _array)
+    {
+        HashSet<Vector3> uniqueSet = new HashSet<Vector3>();
+
+        List<Vector3> uniqueList = new List<Vector3>();
+        foreach (Vector3 vector in _array)
         {
-            Debug.Log(VARIABLE.ToString());
-        }
-        
-        
-        if (!this.NurEinmal)
-        {
-            this.NurEinmal = true;
-            
-            GameObject colliderObject = new GameObject("CustomCollider");
-        
-            MeshFilter meshFilter = colliderObject.AddComponent<MeshFilter>();
-        
-            Mesh mesh = new Mesh();
-            mesh.vertices = verticesOnWall.ToArray();
-        
-            int[] triangles = new int[verticesOnWall.Count];
-        
-            for (int i = 0; i < verticesOnWall.Count; i++)
+            if (uniqueSet.Add(vector))
             {
-                triangles[i] = i;
+                uniqueList.Add(vector);
             }
-        
-            mesh.triangles = triangles;
-        
-            meshFilter.mesh = mesh;
-            
-            MeshCollider meshCollider = colliderObject.AddComponent<MeshCollider>();
-            meshCollider.convex = true;
-        }
-        
-    }
-    
-    private bool CheckIfWall(RaycastHit[] _raycastHit)
-    {
-        bool isThereAWall = false;
-
-        foreach (RaycastHit hit in _raycastHit)
-        {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ShadowWall")) isThereAWall = true;
-
         }
 
-        return isThereAWall;
+        return uniqueList.ToArray();
     }
 
-    RaycastHit GetShadowObjectHit(RaycastHit[] _raycastHit)
+    void CreateMeshOnWall(Vector3[] _vertices)
     {
-        foreach (RaycastHit hit in _raycastHit)
-        {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ShadowObject")) return hit;
-        }
-
-        return new RaycastHit();
     }
 }
