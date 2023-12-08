@@ -16,13 +16,11 @@ public class LightControl : MonoBehaviour
 
     private GameObject Shadow;
     private Mesh ShadowMesh;
-    
     private MeshCollider ShadowCollider;
     private MeshFilter ShadowMeshFilter;
-
     private MeshRenderer ShadowMeshRenderer;
-
     public Material ShadowMeshMaterial;
+    [SerializeField] private float ShadowDepth = 0.1f;
 
     // Start is called before the first frame update
     private void Awake()
@@ -66,27 +64,12 @@ public class LightControl : MonoBehaviour
         
         Vector3[] verticesOnWall = RemoveDuplicates(ComputeVerticesOnWall(meshWorldVertices));
 
-
-
-        Mesh shadowMesh = new Mesh();
+        Vector3[] verticesToGround = CreateGroundVertices(verticesOnWall, objectHit.point);
         
-        int[] triangles = new int[(verticesOnWall.Length - 2) * 3];
+        Vector3[] depthVertices = CreateDepthVertices(verticesToGround, objectHit.normal);
 
-        for (int i = 0; i < verticesOnWall.Length - 2; i++)
-        {
-            triangles[i * 3] = 0;
-            triangles[i * 3 + 1] = i + 1;
-            triangles[i * 3 + 2] = i + 2;
-        }
-
-        shadowMesh.vertices = verticesOnWall;
-        shadowMesh.triangles = triangles;
+        SetNewMesh(depthVertices);
         
-        shadowMesh.RecalculateNormals();
-
-        this.ShadowMeshFilter.mesh = shadowMesh;
-
-        this.ShadowCollider.sharedMesh = shadowMesh;
     }
 
     private bool CheckIfLayerHit(IEnumerable<RaycastHit> _raycastHits, int numberOfLayer)
@@ -163,7 +146,60 @@ public class LightControl : MonoBehaviour
         return uniqueList.ToArray();
     }
 
-    void CreateMeshOnWall(Vector3[] _vertices)
+    private Vector3[] CreateGroundVertices(Vector3[] _vertices, Vector3 _hitPosition)
     {
+        List<Vector3> tempVertices = new List<Vector3>();
+
+        foreach (Vector3 vertex in _vertices)
+        {
+            tempVertices.Add(vertex);
+
+            if (Physics.Raycast(vertex, Vector3.down, out RaycastHit hit, Mathf.Infinity, (1 << LayerMask.NameToLayer("Ground"))))
+            {
+                tempVertices.Add(hit.point);
+            }
+        }
+
+        return tempVertices.ToArray();
+    }
+    
+    // Nur eine ausgelagerte Funktion, die nicht mehr gebraucht wird
+    void CreateTriangles(Vector3[] _vertices)
+    {
+        int[] triangles = new int[(_vertices.Length - 2) * 3];
+
+        for (int i = 0; i < _vertices.Length - 2; i++)
+        {
+            triangles[i * 3] = 0;
+            triangles[i * 3 + 1] = i + 1;
+            triangles[i * 3 + 2] = i + 2;
+        }
+    }
+    
+    Vector3[] CreateDepthVertices(Vector3[] _vertices, Vector3 _wallNormal)
+    {
+        List<Vector3> tempVertices = new List<Vector3>();
+
+        foreach (Vector3 vertex in _vertices)
+        {
+            tempVertices.Add(vertex);
+            tempVertices.Add(vertex + _wallNormal * this.ShadowDepth);
+        }
+
+        return tempVertices.ToArray();
+    }
+
+    void SetNewMesh(Vector3[] _depthVertices)
+    {
+        Mesh shadowMesh = new Mesh();
+        
+        shadowMesh.vertices = _depthVertices;
+        //shadowMesh.triangles = triangles;
+        
+        shadowMesh.RecalculateNormals();
+
+        this.ShadowMeshFilter.mesh = shadowMesh;
+
+        this.ShadowCollider.sharedMesh = shadowMesh;
     }
 }

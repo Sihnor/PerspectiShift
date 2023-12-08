@@ -15,14 +15,14 @@ namespace Player.Scripts
         
         [Header("Grounded"), SerializeField]
         public float DragForce = 7;
-        public LayerMask Ground;
+        protected LayerMask GroundLayerMask;
 
         protected Quaternion RotationBeforeSwitch;
         public virtual EViewMode ViewMode{ get; set;}
 
         protected bool IsGrounded;
         
-        [SerializeField] public Collider PlayerCollider;
+        protected Collider PlayerCollider;
         protected Rigidbody Rigidbody;
         
         protected PlayerInput PlayerInput;
@@ -47,8 +47,6 @@ namespace Player.Scripts
             {
                 this.Rigidbody.freezeRotation = true;
             }
-            
-            
         }
 
         public abstract void Move(InputAction.CallbackContext _context);

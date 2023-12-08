@@ -123,7 +123,7 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
-            this.IsGrounded = Physics.Raycast(transform.position, Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.Ground);
+            this.IsGrounded = Physics.Raycast(transform.position, Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.GroundLayerMask);
 
             if (this.IsGrounded)
             {

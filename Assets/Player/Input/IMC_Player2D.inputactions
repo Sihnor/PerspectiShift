@@ -51,6 +51,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Look3DController",
+                    "type": "Value",
+                    "id": "2e22dfb1-8b5c-41cb-95fc-002d6efcfb29",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "UseDimensionGear",
                     "type": "Button",
                     "id": "659783bb-2fab-459f-9cc7-a4ff55d6862e",
@@ -135,6 +144,17 @@
                     "action": "Move2D",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "a5973b70-13f1-494b-8671-00d04ae3b74a",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move2D",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -259,6 +279,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6f8ac1d8-0f71-4a80-973f-52ff1d2c2d63",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move3D",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5b0d125d-1ccc-459c-9963-09988458e5a9",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -292,6 +323,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1532596c-a441-4995-b79a-712e790cb4d2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump2D",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d8c394b3-751a-459e-9413-b472980dd21f",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -303,8 +345,30 @@
                 },
                 {
                     "name": "",
+                    "id": "7cbda8fd-33b7-4e5d-98ec-11a2925f094b",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump3D",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "bcf9cab0-607d-4ef2-8dc9-751a3f35e6a1",
                     "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseDimensionGear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7af0ad8-7546-4b4c-8ba4-c62f52e229a6",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -344,6 +408,50 @@
                     "action": "SwitchPlane",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "SoulderButton",
+                    "id": "4dcf161c-772a-440e-9e9a-c2a325050360",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchPlane",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "left",
+                    "id": "ea9e7999-df45-41e0-95f7-3588d2d26c20",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchPlane",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "0d1cc775-d13c-41a1-9688-71af1508caf8",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchPlane",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "67a39c32-417c-44ab-ae0d-3b0472f3fff9",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look3DController",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

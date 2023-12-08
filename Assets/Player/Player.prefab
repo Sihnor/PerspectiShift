@@ -462,7 +462,7 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 128
-  PlayerCollider: {fileID: 0}
+  PlayerCollider: {fileID: 4274831872349049676}
 --- !u!114 &2210728711726597
 MonoBehaviour:
   m_ObjectHideFlags: 0
