@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 
 namespace Player.Scripts
@@ -10,8 +11,8 @@ namespace Player.Scripts
 
         private Vector2 RotationInput;
 
-        [SerializeField] private float RotationSpeed = .01f;
-        [SerializeField] private float RotationSpeedController = 1f;
+        [SerializeField] private float RotationSpeed = .1f;
+        [SerializeField] private float RotationControllerSpeed = 10f;
 
         [SerializeField] private Transform Player;
 
@@ -35,9 +36,11 @@ namespace Player.Scripts
 
         private void Start()
         {
-            this.LookAction.performed += Look;
-            this.LookControllerAction.performed += LookController;
+            this.LookAction.performed += _context => Look(_context, this.RotationSpeed);
+            this.LookControllerAction.performed += _context => Look(_context, this.RotationControllerSpeed);
+
             this.LookAction.canceled += EndLook;
+            this.LookControllerAction.canceled += EndLook;
             
             this.ViewMode = EViewMode.ThreeDimension;
         }
@@ -47,37 +50,29 @@ namespace Player.Scripts
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
             
+            this.RotationVecCam.x -= this.RotationInput.y;
+            this.RotationVecCam.x = Mathf.Clamp(this.RotationVecCam.x, -45, 45);
+            this.RotationVecPlayer.y += this.RotationInput.x;
+            
             this.Player.rotation = Quaternion.Euler(this.RotationVecPlayer);
             this.Camera.transform.rotation = Quaternion.Euler(new Vector3(this.RotationVecCam.x, this.RotationVecPlayer.y, 0));
         }
 
-        private void Look(InputAction.CallbackContext _context)
+        private void Look(InputAction.CallbackContext _context, float _rotationSpeed)
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
             
             this.RotationInput = _context.ReadValue<Vector2>();
-            
-            this.RotationVecCam.x -= this.RotationInput.y;
-            this.RotationVecCam.x = Mathf.Clamp(this.RotationVecCam.x, -45, 45);
-            this.RotationVecPlayer.y += this.RotationInput.x * this.RotationSpeed;
+            this.RotationInput.x *= _rotationSpeed;
         }
 
-        private void LookController(InputAction.CallbackContext _context)
-        {
-            if (this.ViewMode != EViewMode.ThreeDimension) return;
-            
-            this.RotationInput = _context.ReadValue<Vector2>();
-            
-            this.RotationVecCam.x -= this.RotationInput.y;
-            this.RotationVecCam.x = Mathf.Clamp(this.RotationVecCam.x, -45, 45);
-            this.RotationVecPlayer.y += this.RotationInput.x * this.RotationSpeedController;
-        }
+
         
         private void EndLook(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
             
-            //this.RotationInput = _context.ReadValue<Vector2>();
+            this.RotationInput = _context.ReadValue<Vector2>();
         }
 
         private static float ClampAngle(float _angle, float _from, float _to)
