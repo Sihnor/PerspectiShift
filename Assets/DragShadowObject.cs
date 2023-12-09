@@ -50,6 +50,7 @@ public class DragShadowObject : MonoBehaviour
             if (this.Hit.collider.gameObject.GetComponent<Draggable>().GetIsDraggable() == false) return;
             
             this.DragOffset = this.Hit.collider.transform.position - transform.position;
+            this.DragOffset -= this.Hit.normal * 0.02f;
             this.IsDragging = true;
 
             this.PlayerMovement3D.SetIsDragging(true);

@@ -76,11 +76,11 @@ namespace Player.Scripts
 
             this.MovementInput = _context.ReadValue<Vector2>();
 
-            // Disable left right movement when dragging
-            DragShadowObject component = GetComponent<DragShadowObject>();
-            if (component != null && component.IsDragged())
+            // Manipulate the input if the player is dragging an object
+            if (this.IsDragging)
             {
                 this.MovementInput.x = 0;
+                this.MovementInput.y *= 0.6f;
             }
         }
 

@@ -1219,11 +1219,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1485625930451442014, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
       propertyPath: m_Size.z
-      value: 100
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1621499920324504925, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
       propertyPath: m_Size.x
-      value: 100
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1894502794486392633, guid: 52d09244bd4fa5240857fd8391a3edb2, type: 3}
       propertyPath: m_LocalPosition.x
