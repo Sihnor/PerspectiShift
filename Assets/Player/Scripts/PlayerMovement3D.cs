@@ -7,6 +7,8 @@ namespace Player.Scripts
 {
     public class PlayerMovement3D : Movement
     {
+        private bool IsDragging = false;
+        
         public override EViewMode ViewMode
         {
             set
@@ -73,6 +75,13 @@ namespace Player.Scripts
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
 
             this.MovementInput = _context.ReadValue<Vector2>();
+
+            // Disable left right movement when dragging
+            DragShadowObject component = GetComponent<DragShadowObject>();
+            if (component != null && component.IsDragged())
+            {
+                this.MovementInput.x = 0;
+            }
         }
 
         public override void EndMove(InputAction.CallbackContext _context)
@@ -124,6 +133,11 @@ namespace Player.Scripts
             {
                 this.Rigidbody.drag = 0;
             }
+        }
+        
+        public void SetIsDragging(bool _isDragging)
+        {
+            this.IsDragging = _isDragging;
         }
     }
 }

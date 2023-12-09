@@ -384,6 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 8515433123296120957}
   RotationSpeed: 5
+  RotationControllerSpeed: 10
   Player: {fileID: 7283766526628283064}
   PlayerInput: {fileID: 2543047897877328931}
 --- !u!1 &8808957379273969864
@@ -400,6 +401,7 @@ GameObject:
   - component: {fileID: 2210728711726597}
   - component: {fileID: 3590576165788994992}
   - component: {fileID: 2543047897877328931}
+  - component: {fileID: 1529845519531195560}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -440,10 +442,6 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpSpeed: 10
   DragForce: 7
-  Ground:
-    serializedVersion: 2
-    m_Bits: 128
-  PlayerCollider: {fileID: 0}
 --- !u!114 &7232035986506047936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,10 +457,6 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpSpeed: 7
   DragForce: 7
-  Ground:
-    serializedVersion: 2
-    m_Bits: 128
-  PlayerCollider: {fileID: 4274831872349049676}
 --- !u!114 &2210728711726597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,3 +681,15 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1529845519531195560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8808957379273969864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f720fdd1d49e288a094b6c7f640d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "DragShadowObject",
+                    "type": "Button",
+                    "id": "47080128-2b86-4a75-b4ab-87bd35624709",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -450,6 +459,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look3DController",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6eabdc09-c0db-41cd-bc76-0d260c7ff56d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragShadowObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "820efd2d-9e08-4137-a611-f5c7c5d7bbec",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragShadowObject",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

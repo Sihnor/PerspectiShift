@@ -25,6 +25,8 @@ namespace Player.Scripts
         private Vector3 RotationVecCam;
 
         private Vector3 RotationVecPlayer;
+        
+        private bool IsDragging = false;
 
         public EViewMode ViewMode { get; set; }
 
@@ -50,6 +52,11 @@ namespace Player.Scripts
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
             
+            if (this.IsDragging)
+            {
+                LookToNormalOfObject(this.Player.GetComponent<DragShadowObject>().GetGrabbedObject());
+            }
+            
             this.RotationVecCam.x -= this.RotationInput.y;
             this.RotationVecCam.x = Mathf.Clamp(this.RotationVecCam.x, -45, 45);
             this.RotationVecPlayer.y += this.RotationInput.x;
@@ -63,10 +70,10 @@ namespace Player.Scripts
             if (this.ViewMode != EViewMode.ThreeDimension) return;
             
             this.RotationInput = _context.ReadValue<Vector2>();
+            
+            if(this.IsDragging) this.RotationInput.x = 0;
             this.RotationInput.x *= _rotationSpeed;
         }
-
-
         
         private void EndLook(InputAction.CallbackContext _context)
         {
@@ -81,6 +88,25 @@ namespace Player.Scripts
             if (_angle < 0f) _angle = 360 + _angle;
             if (_angle > 180f) return Mathf.Max(_angle, 360 + _from);
             return Mathf.Min(_angle, _to);
+        }
+        
+        public void SetIsDragging(bool _isDragging)
+        {
+            this.IsDragging = _isDragging;
+        }
+        
+        private void LookToNormalOfObject(RaycastHit _grabbedObject)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation( (_grabbedObject.normal * -1), this.Player.transform.up);
+
+            // Save the current rotation around the X and Z axis.
+            float angleX = this.Player.transform.rotation.eulerAngles.x;
+            float angleZ = this.Player.transform.rotation.eulerAngles.z;
+
+            this.Player.transform.rotation = Quaternion.Lerp(this.Player.transform.rotation, targetRotation, 10 * Time.deltaTime);
+            this.Player.transform.rotation = Quaternion.Euler(angleX, this.Player.transform.rotation.eulerAngles.y, angleZ);
+            
+            this.RotationVecPlayer.y = this.Player.transform.rotation.eulerAngles.y;
         }
     }
 }
