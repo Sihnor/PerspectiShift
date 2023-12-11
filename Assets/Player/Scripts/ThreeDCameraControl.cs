@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Player.Scripts
 {
-    public class FPCameraControl : MonoBehaviour, IViewMode
+    public class ThreeDCameraControl : MonoBehaviour, IViewMode
     {
         [SerializeField] private Transform Camera;
 

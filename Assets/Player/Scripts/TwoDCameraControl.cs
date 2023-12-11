@@ -1,20 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
 namespace Player.Scripts
 {
-    public class TPCameraControl : MonoBehaviour, IViewMode
+    public class TwoDCameraControl : MonoBehaviour, IViewMode
     {
         [SerializeField] public Transform Player;
 
         [SerializeField] private PlayerInput PlayerInput;
 
         private InputAction SwitchPlaneAction;
-
+        
+        private bool IsOnWall = false;
         public EViewMode ViewMode { get; set; }
 
         private void Awake()
@@ -33,8 +31,15 @@ namespace Player.Scripts
         public void SwitchPlane(InputAction.CallbackContext _context)
         {
             if (this.ViewMode == EViewMode.ThreeDimension) return;
+            if (this.IsOnWall) return;
 
             this.Player.transform.Rotate(Vector3.up, 90 * _context.ReadValue<Vector2>().x);
+        }
+
+        public void SetRotationToWall(Vector3 _normal)
+        {
+            this.Player.rotation = Quaternion.LookRotation(_normal);
+            this.IsOnWall = true;
         }
     }
 }

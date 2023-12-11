@@ -15,7 +15,7 @@ public class DragShadowObject : MonoBehaviour
     private Vector3 DragOffset = Vector3.zero;
 
     private PlayerMovement3D PlayerMovement3D;
-    private FPCameraControl FpCameraControl;
+    private ThreeDCameraControl ThreeDCameraControl;
     
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class DragShadowObject : MonoBehaviour
         this.DragAction = this.PlayerInput.currentActionMap.FindAction("DragShadowObject");
         
         this.PlayerMovement3D = GetComponent<PlayerMovement3D>();
-        this.FpCameraControl = GetComponentInChildren<FPCameraControl>();
+        this.ThreeDCameraControl = GetComponentInChildren<ThreeDCameraControl>();
     }
 
     // Start is called before the first frame update
@@ -54,13 +54,13 @@ public class DragShadowObject : MonoBehaviour
             this.IsDragging = true;
 
             this.PlayerMovement3D.SetIsDragging(true);
-            this.FpCameraControl.SetIsDragging(true);
+            this.ThreeDCameraControl.SetIsDragging(true);
         }
         else
         {
             this.IsDragging = false;
             this.PlayerMovement3D.SetIsDragging(false);
-            this.FpCameraControl.SetIsDragging(false);
+            this.ThreeDCameraControl.SetIsDragging(false);
         }
     }
     
@@ -68,7 +68,7 @@ public class DragShadowObject : MonoBehaviour
     {
         this.IsDragging = false;
         this.PlayerMovement3D.SetIsDragging(false);
-        this.FpCameraControl.SetIsDragging(false);
+        this.ThreeDCameraControl.SetIsDragging(false);
     }
     
     public bool IsDragged()
