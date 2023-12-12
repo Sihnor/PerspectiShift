@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Player.Scripts
 {
-    public class TwoDCameraControl : MonoBehaviour, IViewMode
+    public class CameraControl2D : MonoBehaviour, IViewMode
     {
         [SerializeField] public Transform Player;
 
@@ -38,7 +38,10 @@ namespace Player.Scripts
 
         public void SetRotationToWall(Vector3 _normal)
         {
-            this.Player.rotation = Quaternion.LookRotation(_normal);
+            Quaternion targetRotation = Quaternion.LookRotation( (_normal * -1), this.Player.transform.up);
+
+            this.Player.transform.rotation = targetRotation;
+            
             this.IsOnWall = true;
         }
     }

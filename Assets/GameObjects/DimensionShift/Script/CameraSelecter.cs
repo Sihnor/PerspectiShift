@@ -12,8 +12,8 @@ namespace Player.Scripts
     {
         [Header("Camera"), SerializeField] public Camera ThreeDCamera;
         public Camera TwoDCamera;
-        public ThreeDCameraControl ThreeDCameraScript;
-        public TwoDCameraControl TwoDCameraScript;
+        public CameraControl3D CameraScript3D;
+        public CameraControl2D CameraScript2D;
 
         [Header("Movement"), SerializeField] public PlayerMovement2D Movement2DScript;
         public PlayerMovement3D Movement3DScript;
@@ -27,16 +27,16 @@ namespace Player.Scripts
             {
                 this.Movement2DScript.ViewMode = EViewMode.ThreeDimension;
                 this.Movement3DScript.ViewMode = EViewMode.ThreeDimension;
-                this.ThreeDCameraScript.ViewMode = EViewMode.ThreeDimension;
-                this.TwoDCameraScript.ViewMode = EViewMode.ThreeDimension;
+                this.CameraScript3D.ViewMode = EViewMode.ThreeDimension;
+                this.CameraScript2D.ViewMode = EViewMode.ThreeDimension;
             }
 
             if (this.TwoDCamera.enabled)
             {
                 this.Movement3DScript.ViewMode = EViewMode.TwoDimension;
                 this.Movement2DScript.ViewMode = EViewMode.TwoDimension;
-                this.TwoDCameraScript.ViewMode = EViewMode.TwoDimension;
-                this.ThreeDCameraScript.ViewMode = EViewMode.TwoDimension;
+                this.CameraScript2D.ViewMode = EViewMode.TwoDimension;
+                this.CameraScript3D.ViewMode = EViewMode.TwoDimension;
             }
         }
     }
