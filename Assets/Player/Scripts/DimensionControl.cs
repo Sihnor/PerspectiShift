@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,8 +42,21 @@ namespace Player.Scripts
             if (!this.HasDimensionGear) return;
                         
             if (this.TimeForNextSwitch > Time.time) return;
-
-            this.DimensionManager.OnDimensionSwitch();
+            
+            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2f, LayerMask.GetMask("ShadowWall")))
+            {
+                this.DimensionManager.OnDimensionSwitch();
+                this.DimensionManager.CameraScript2D.SetRotationToWall(hit.normal);
+            }
+            else
+            {
+                this.DimensionManager.OnDimensionSwitch();
+            }
+            
+            
+            
+            
+            
             this.TimeForNextSwitch = Time.time + this.Cooldown;
         }
     }

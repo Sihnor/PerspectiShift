@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Player.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,7 +12,7 @@ public class DragShadowObject : MonoBehaviour
     private Vector3 DragOffset = Vector3.zero;
 
     private PlayerMovement3D PlayerMovement3D;
-    private FPCameraControl FpCameraControl;
+    private CameraControl3D CameraControl3D;
     
     private void Awake()
     {
@@ -23,7 +20,7 @@ public class DragShadowObject : MonoBehaviour
         this.DragAction = this.PlayerInput.currentActionMap.FindAction("DragShadowObject");
         
         this.PlayerMovement3D = GetComponent<PlayerMovement3D>();
-        this.FpCameraControl = GetComponentInChildren<FPCameraControl>();
+        this.CameraControl3D = GetComponentInChildren<CameraControl3D>();
     }
 
     // Start is called before the first frame update
@@ -54,21 +51,23 @@ public class DragShadowObject : MonoBehaviour
             this.IsDragging = true;
 
             this.PlayerMovement3D.SetIsDragging(true);
-            this.FpCameraControl.SetIsDragging(true);
+            this.CameraControl3D.SetIsDragging(true);
         }
-        else
-        {
-            this.IsDragging = false;
-            this.PlayerMovement3D.SetIsDragging(false);
-            this.FpCameraControl.SetIsDragging(false);
-        }
+        //else
+        //{
+        //    this.IsDragging = false;
+        //    this.PlayerMovement3D.SetIsDragging(false);
+        //    this.CameraControl3D.SetIsDragging(false);
+        //}
     }
     
     private void StopDragObject(InputAction.CallbackContext _context)
     {
+        if (!this.IsDragging) return;
+
         this.IsDragging = false;
         this.PlayerMovement3D.SetIsDragging(false);
-        this.FpCameraControl.SetIsDragging(false);
+        this.CameraControl3D.SetIsDragging(false);
     }
     
     public bool IsDragged()

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +16,7 @@ namespace Player.Scripts
 
                 if (value == EViewMode.TwoDimension)
                 {
-                    transform.rotation = RotationBeforeSwitch;
+                    transform.rotation = this.RotationBeforeSwitch;
                 }
 
                 base.ViewMode = value;

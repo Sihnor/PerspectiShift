@@ -10,33 +10,33 @@ namespace Player.Scripts
 {
     public class CameraSelecter : MonoBehaviour
     {
-        [Header("Camera"), SerializeField] public Camera FirstPersonCamera;
-        public Camera ThirdPersonCamera;
-        public FPCameraControl FirstPersonCameraScript;
-        public TPCameraControl ThirdPersonCameraScript;
+        [Header("Camera"), SerializeField] public Camera ThreeDCamera;
+        public Camera TwoDCamera;
+        public CameraControl3D CameraScript3D;
+        public CameraControl2D CameraScript2D;
 
         [Header("Movement"), SerializeField] public PlayerMovement2D Movement2DScript;
         public PlayerMovement3D Movement3DScript;
 
         public void OnDimensionSwitch()
         {
-            this.FirstPersonCamera.enabled = !FirstPersonCamera.enabled;
-            this.ThirdPersonCamera.enabled = !ThirdPersonCamera.enabled;
+            this.ThreeDCamera.enabled = !this.ThreeDCamera.enabled;
+            this.TwoDCamera.enabled = !this.TwoDCamera.enabled;
 
-            if (FirstPersonCamera.enabled)
+            if (this.ThreeDCamera.enabled)
             {
                 this.Movement2DScript.ViewMode = EViewMode.ThreeDimension;
                 this.Movement3DScript.ViewMode = EViewMode.ThreeDimension;
-                this.FirstPersonCameraScript.ViewMode = EViewMode.ThreeDimension;
-                this.ThirdPersonCameraScript.ViewMode = EViewMode.ThreeDimension;
+                this.CameraScript3D.ViewMode = EViewMode.ThreeDimension;
+                this.CameraScript2D.ViewMode = EViewMode.ThreeDimension;
             }
 
-            if (ThirdPersonCamera.enabled)
+            if (this.TwoDCamera.enabled)
             {
                 this.Movement3DScript.ViewMode = EViewMode.TwoDimension;
                 this.Movement2DScript.ViewMode = EViewMode.TwoDimension;
-                this.ThirdPersonCameraScript.ViewMode = EViewMode.TwoDimension;
-                this.FirstPersonCameraScript.ViewMode = EViewMode.TwoDimension;
+                this.CameraScript2D.ViewMode = EViewMode.TwoDimension;
+                this.CameraScript3D.ViewMode = EViewMode.TwoDimension;
             }
         }
     }
