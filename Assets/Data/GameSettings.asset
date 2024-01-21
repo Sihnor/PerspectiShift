@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d519b65c0ac4939ac3e55ebd1c48e52, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  MasterVolume: 1
-  MusicVolume: 1
+  MasterVolume: 0.6962961
+  MusicVolume: 0.31490192
   SFXVolume: 1
-  VoiceVolume: 1
-  AmbientVolume: 1
+  VoiceVolume: 0.8093027
+  AmbientVolume: 0.1877697

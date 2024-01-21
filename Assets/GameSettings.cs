@@ -7,11 +7,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "GameSettings", order = 0)]
 public class GameSettings : ScriptableObject
 {
-    [SerializeField] private float MasterVolume;
-    [SerializeField] private float MusicVolume;
-    [SerializeField] private float SFXVolume;
-    [SerializeField] private float VoiceVolume;
-    [SerializeField] private float AmbientVolume;
+    [SerializeField] public float MasterVolume;
+    [SerializeField] public float MusicVolume;
+    [SerializeField] public float SFXVolume;
+    [SerializeField] public float VoiceVolume;
+    [SerializeField] public float AmbientVolume;
     
     [Button("Save Settings")]
     public void SaveSettings()

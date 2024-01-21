@@ -37,11 +37,13 @@ public class SceneLoader : MonoBehaviour
         LoadScene(this.StartScene);
     }
 
+    // Load the scene.
     public void LoadScene(ESceneIndices sceneIndex)
     {
         StartCoroutine(LoadSceneAsync(sceneIndex));
     }
     
+    // Load the scene asynchronously.
     private IEnumerator LoadSceneAsync(ESceneIndices sceneIndex)
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync((int)sceneIndex);
@@ -52,11 +54,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Load the scene additively.
     public void LoadSceneAdditive(ESceneIndices sceneIndex)
     {
         StartCoroutine(LoadSceneAdditiveAsync(sceneIndex));
     }
     
+    // Load the scene additively asynchronously.
     private IEnumerator LoadSceneAdditiveAsync(ESceneIndices sceneIndex)
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync((int)sceneIndex, UnityEngine.SceneManagement.LoadSceneMode.Additive);
@@ -67,11 +71,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Unload the scene.
     public void UnloadScene(ESceneIndices sceneIndex)
     {
         StartCoroutine(UnloadSceneAsync(sceneIndex));
     }
     
+    // Unload the scene asynchronously.
     private IEnumerator UnloadSceneAsync(ESceneIndices sceneIndex)
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync((int)sceneIndex);
@@ -82,11 +88,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Unload the scene additively.
     public void UnloadSceneAdditive(ESceneIndices sceneIndex)
     {
         StartCoroutine(UnloadSceneAdditiveAsync(sceneIndex));
     }
     
+    // Unload the scene additively asynchronously.
     private IEnumerator UnloadSceneAdditiveAsync(ESceneIndices sceneIndex)
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync((int)sceneIndex, UnityEngine.SceneManagement.UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
@@ -97,11 +105,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Unload all scenes.
     public void UnloadAllScenes()
     {
         StartCoroutine(UnloadAllScenesAsync());
     }
     
+    // Unload all scenes asynchronously.
     private IEnumerator UnloadAllScenesAsync()
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
@@ -112,11 +122,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Unload all scenes additively.
     public void UnloadAllScenesAdditive()
     {
         StartCoroutine(UnloadAllScenesAdditiveAsync());
     }
     
+    // Unload all scenes additively asynchronously.
     private IEnumerator UnloadAllScenesAdditiveAsync()
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), UnityEngine.SceneManagement.UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
@@ -127,11 +139,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Unload all scenes except.
     public void UnloadAllScenesExcept(ESceneIndices sceneIndex)
     {
         StartCoroutine(UnloadAllScenesExceptAsync(sceneIndex));
     }
     
+    // Unload all scenes except asynchronously.
     private IEnumerator UnloadAllScenesExceptAsync(ESceneIndices sceneIndex)
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), UnityEngine.SceneManagement.UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
@@ -149,11 +163,13 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
+    // Unload all scenes except additively.
     public void UnloadAllScenesExceptAdditive(ESceneIndices sceneIndex)
     {
         StartCoroutine(UnloadAllScenesExceptAdditiveAsync(sceneIndex));
     }
     
+    // Unload all scenes except additively asynchronously.
     private IEnumerator UnloadAllScenesExceptAdditiveAsync(ESceneIndices sceneIndex)
     {
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), UnityEngine.SceneManagement.UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
