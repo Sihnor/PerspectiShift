@@ -12,19 +12,19 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartButton.onClick.AddListener(StartGame);
-        SettingsButton.onClick.AddListener(OpenSettings);
-        QuitButton.onClick.AddListener(QuitGame);
+        this.StartButton.onClick.AddListener(StartGame);
+        this.SettingsButton.onClick.AddListener(OpenSettings);
+        this.QuitButton.onClick.AddListener(QuitGame);
     }
 
     private void StartGame()
     {
-        SceneLoader.Instance.LoadScene(ESceneIndices.Game);
+        SceneLoader.Instance.LoadSceneAsync(ESceneIndices.Game, true);
     }
 
     private void OpenSettings()
     {
-        SceneLoader.Instance.LoadScene(ESceneIndices.Settings);
+        SceneLoader.Instance.LoadSceneAsync(ESceneIndices.Settings, false);
     }
 
     private void QuitGame()
