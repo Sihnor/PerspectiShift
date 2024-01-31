@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
 
     private void OpenSettings()
     {
-        SceneLoader.Instance.LoadSceneAsync(ESceneIndices.Settings, false);
+        SceneLoader.Instance.LoadSceneAdditive(ESceneIndices.Settings);
     }
 
     private void QuitGame()
