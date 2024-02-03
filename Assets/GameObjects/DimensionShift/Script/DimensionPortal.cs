@@ -24,7 +24,8 @@ public class DimensionProtal : MonoBehaviour
         {
             DimensionManager.OnDimensionSwitch();
 
-            TimeForNextSwitch = Time.time + Cooldown;    
+            TimeForNextSwitch = Time.time + Cooldown;  
+            other.gameObject.transform.position = transform.position + new Vector3(0,0,0.5f);
         }
         
     }

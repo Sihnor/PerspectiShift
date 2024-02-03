@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 2115332418444237282}
   - component: {fileID: 7403947693883201955}
   m_Layer: 0
-  m_Name: LightSource
+  m_Name: LightSource_Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
