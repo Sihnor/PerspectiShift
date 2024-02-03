@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262733760664712057}
-  m_Mesh: {fileID: -2124705421725058983, guid: 0aec07670e835b6488d7946d1e14dece, type: 3}
+  m_Mesh: {fileID: 3468755486377148355, guid: 0aec07670e835b6488d7946d1e14dece, type: 3}
 --- !u!23 &16850505288049813
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -224,8 +224,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightBeamRange: 0
-  LightSpotAngle: 0
-  ShadowLayerMask:
-    serializedVersion: 2
-    m_Bits: 2147483648
-  StartRayPosition: {fileID: 2749403110947289144}
+  IsLightOn: 0
+  ShadowMeshMaterial: {fileID: 0}
+  ShadowDepth: 0.1
