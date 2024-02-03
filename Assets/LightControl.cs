@@ -13,6 +13,7 @@ public class LightControl : MonoBehaviour
     private Light TempLight;
 
     private Vector3 LightPosition;
+    private Vector3 LightDirection;
 
     private GameObject Shadow;
     private Mesh ShadowMesh;
@@ -21,12 +22,14 @@ public class LightControl : MonoBehaviour
     private MeshRenderer ShadowMeshRenderer;
     public Material ShadowMeshMaterial;
     [SerializeField] private float ShadowDepth = 0.1f;
+    
 
     // Start is called before the first frame update
     private void Awake()
     {
         this.TempLight = GetComponentInChildren<Light>();
         this.LightPosition = transform.GetChild(1).position;
+        this.LightDirection = transform.GetChild(1).forward;
         this.LightBeamRange = this.TempLight.range;
 
         this.Shadow = new GameObject("CustomCollider");
@@ -48,28 +51,47 @@ public class LightControl : MonoBehaviour
     private void RaycastFunction()
     {
         // Raycast to Get only ShadowWall and ShadowObject
-        RaycastHit[] raycastHit = Physics.RaycastAll(this.LightPosition, transform.forward, this.LightBeamRange,
+        RaycastHit[] raycastHit = Physics.RaycastAll(this.LightPosition, this.LightDirection, this.LightBeamRange,
             ((1 << LayerMask.NameToLayer("ShadowWall")) | (1 << LayerMask.NameToLayer("ShadowObject"))));
 
+        Debug.DrawLine(this.LightPosition, this.LightPosition + this.LightDirection, Color.magenta, .01f);
         
         if (!CheckIfLayerHit(raycastHit, LayerMask.NameToLayer("ShadowWall"))) return;
         if(!CheckIfLayerHit(raycastHit, LayerMask.NameToLayer("ShadowObject"))) return;
         
-        
         RaycastHit objectHit = GetLayerObjectHit(raycastHit, LayerMask.NameToLayer("ShadowObject"));
-
-        Vector3[] meshLocalVertices = objectHit.collider.gameObject.GetComponent<MeshFilter>().mesh.vertices;
+        
+        Vector3[] meshLocalVertices = GetMeshLocalVertices(objectHit);
 
         Vector3[] meshWorldVertices = ConvertLocalToWorldVertices(meshLocalVertices, objectHit.collider.transform);
         
+        //Vector3[] verticesOnWall = RemoveDuplicates(meshWorldVertices);
         Vector3[] verticesOnWall = RemoveDuplicates(ComputeVerticesOnWall(meshWorldVertices));
-
+        
         Vector3[] verticesToGround = CreateGroundVertices(verticesOnWall, objectHit.point);
         
         Vector3[] depthVertices = CreateDepthVertices(verticesToGround, objectHit.normal);
-
+        
         SetNewMesh(depthVertices);
         
+    }
+
+    private Vector3[] GetMeshLocalVertices(RaycastHit objectHit)
+    {
+        GetAllMeshFilter script = objectHit.collider.gameObject.GetComponent<GetAllMeshFilter>();
+        List<MeshFilter> meshList = script.GetMeshFilters();
+
+        List<Vector3> listOfAllMesh = new List<Vector3>();
+
+        foreach (MeshFilter meshFilter in meshList)
+        {
+            foreach (Vector3 vertex in meshFilter.mesh.vertices)
+            {
+                listOfAllMesh.Add(vertex);
+            }
+        }
+
+        return listOfAllMesh.ToArray();
     }
 
     private bool CheckIfLayerHit(IEnumerable<RaycastHit> _raycastHits, int numberOfLayer)
