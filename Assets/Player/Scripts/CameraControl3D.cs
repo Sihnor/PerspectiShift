@@ -139,7 +139,7 @@ namespace Player.Scripts
             temp += this.RotationInput.x;
 
             this.TargetCameraRotation.x -= this.RotationInput.y;
-            this.TargetCameraRotation.x = Mathf.Clamp(this.TargetCameraRotation.x, -45, 45);
+            this.TargetCameraRotation.x = Mathf.Clamp(this.TargetCameraRotation.x, -70, 70);
 
             // Yaw Rotation
             this.Player.rotation = Quaternion.Euler(this.TargetPlayerRotation.eulerAngles);

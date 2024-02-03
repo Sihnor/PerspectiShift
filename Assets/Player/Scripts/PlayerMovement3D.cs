@@ -8,6 +8,7 @@ namespace Player.Scripts
     public class PlayerMovement3D : Movement
     {
         private bool IsDragging = false;
+        public AnimationCurve JumpCurve;
         
         public override EViewMode ViewMode
         {
@@ -92,6 +93,9 @@ namespace Player.Scripts
         public override void Jump(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
+
+            float time = 0f;
+            
 
             this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
         }
