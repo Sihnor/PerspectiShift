@@ -401,9 +401,10 @@ GameObject:
   - component: {fileID: 6192067603707213904}
   - component: {fileID: 7232035986506047936}
   - component: {fileID: 2210728711726597}
-  - component: {fileID: 3590576165788994992}
-  - component: {fileID: 2543047897877328931}
   - component: {fileID: 1529845519531195560}
+  - component: {fileID: 8917609193869864992}
+  - component: {fileID: 2543047897877328931}
+  - component: {fileID: 3590576165788994992}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -504,36 +505,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9fb672d776b08a459962356aed70539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DimensionManager: {fileID: 0}
+  CameraControl2D: {fileID: 8216448549728736314}
   Cooldown: 1
-  HasDimensionGear: 0
---- !u!54 &3590576165788994992
-Rigidbody:
+--- !u!114 &1529845519531195560
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8808957379273969864}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f720fdd1d49e288a094b6c7f640d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8917609193869864992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8808957379273969864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6fddfccae3da384cb2f7743a25a2831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TwoDCamera: {fileID: 7696064572760238608}
+  ThreeDCamera: {fileID: 8050580029409057169}
+  CameraScript2D: {fileID: 8216448549728736314}
+  CameraScript3D: {fileID: 4925098722905588773}
+  Movement2DScript: {fileID: 6192067603707213904}
+  Movement3DScript: {fileID: 7232035986506047936}
 --- !u!114 &2543047897877328931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,15 +719,30 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1529845519531195560
-MonoBehaviour:
+--- !u!54 &3590576165788994992
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8808957379273969864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07f720fdd1d49e288a094b6c7f640d4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

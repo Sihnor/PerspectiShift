@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311926, g: 0.38073996, b: 0.35872683, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33212a12a3e10ca43b667e56be08ec79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartScene: 1
+  StartScene: 2
   LoadingScreenObject: {fileID: 2091551258}
   LoadingScreenImage: {fileID: 2091551259}
   LoadingScreenCurve:
@@ -335,6 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a599eae77e187f48a618e82d60d1f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HasDimensionGear: 1
 --- !u!4 &1195594674
 Transform:
   m_ObjectHideFlags: 0

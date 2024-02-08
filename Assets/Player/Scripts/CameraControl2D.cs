@@ -21,7 +21,7 @@ namespace Player.Scripts
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             this.SwitchPlaneAction.started += SwitchPlane;
 
