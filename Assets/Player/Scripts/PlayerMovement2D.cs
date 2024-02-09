@@ -56,8 +56,6 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
-            //Vector3 velocity = new Vector3(this.MovementInput.x * this.MoveSpeed * (1/Time.deltaTime), this.Rigidbody.velocity.y ,0);
-
             Vector3 velocity = transform.right * (this.MovementInput.x * this.MoveSpeed * (1 / Time.deltaTime));
             velocity.y = this.Rigidbody.velocity.y;
             
@@ -96,7 +94,6 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
-            //this.Rigidbody.AddForce(new Vector3(0,-this.JumpSpeed,0), ForceMode.Impulse);
             Vector3 velocity = this.Rigidbody.velocity;
             velocity = new Vector3(velocity.x, velocity.y * 0.5f, velocity.z);
             this.Rigidbody.velocity = velocity;
@@ -107,13 +104,12 @@ namespace Player.Scripts
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
             
-            Vector3 rigidbodyVelocity = new Vector3(this.Rigidbody.velocity.x, 0, 0);
+            Vector3 rigidbodyVelocity = new Vector3(this.Rigidbody.velocity.x, 0, this.Rigidbody.velocity.z);
 
             if (rigidbodyVelocity.magnitude > this.MoveSpeed)
             {
                 Vector3 velocityNormalised = rigidbodyVelocity.normalized;
                 velocityNormalised *= this.MoveSpeed;
-
                 this.Rigidbody.velocity = new Vector3(velocityNormalised.x, this.Rigidbody.velocity.y, velocityNormalised.z);
             }
         }
