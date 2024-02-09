@@ -49,11 +49,11 @@ namespace Player.Scripts
             }
         }
 
-        public abstract void Move(InputAction.CallbackContext _context);
-        public abstract void EndMove(InputAction.CallbackContext _context);
+        public abstract void Move(InputAction.CallbackContext context);
+        public abstract void EndMove(InputAction.CallbackContext context);
         
-        public abstract void Jump(InputAction.CallbackContext _context);
-        public abstract void EndJump(InputAction.CallbackContext _context);
+        public abstract void Jump(InputAction.CallbackContext context);
+        public abstract void EndJump(InputAction.CallbackContext context);
         
         protected abstract void SpeedControl();
     }

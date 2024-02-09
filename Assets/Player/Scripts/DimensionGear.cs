@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +14,7 @@ namespace Player.Scripts
         private InputAction DimensionGearAction;
 
         private bool LastFrameDimensionGearAvailable = false;
-
+        
         private void Awake()
         {
             this.DimensionGearAction = GetComponent<PlayerInput>().currentActionMap.FindAction("UseDimensionGear");
@@ -28,7 +27,6 @@ namespace Player.Scripts
 
         private void Update()
         {
-
             UpdateDimensionGearUI();
         }
 
@@ -47,12 +45,14 @@ namespace Player.Scripts
             if (!GameManager.Instance.HasDimensionGear) return;
 
             if (this.TimeForNextSwitch > Time.time) return;
+            
+            bool didItHit = Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2f, LayerMask.GetMask("ShadowWall"));
+            Debug.DrawLine(transform.position, transform.position + transform.forward * 2, Color.red, 2f);
+            if (!didItHit) return;
 
             EventManager.Instance.OnDimensionSwitch();
             
-            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2f, LayerMask.GetMask("ShadowWall")))
-                this.CameraControl2D.SetRotationToWall(hit.normal);
-            
+            this.CameraControl2D.SetRotationToWall(hit.normal);
             
             this.TimeForNextSwitch = Time.time + this.Cooldown;
         }

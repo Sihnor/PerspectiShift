@@ -43,17 +43,17 @@ public class SlidingDoorScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider _other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (_other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             ToggleDoor();
         }
     }
 
-    private void OnTriggerExit(Collider _other)
+    private void OnTriggerExit(Collider other)
     {
-        if (_other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             ToggleDoor();
         }

@@ -17,25 +17,25 @@ public class Teleport : MonoBehaviour
         this.TimeForNextTeleport = 0;
     }
 
-    public void CollisionDetected(Collision _collision, Platform.EPlatform _platform)
+    public void CollisionDetected(Collision collision, Platform.EPlatform platform)
     {
         if (this.TimeForNextTeleport > Time.time)
         {
             return;
         }
         
-        if (_platform == Platform.EPlatform.Platform1)
+        if (platform == Platform.EPlatform.Platform1)
         {
             Vector3 temp = Platform2.position;
             temp.y += 5;
-            _collision.gameObject.transform.position = temp;
+            collision.gameObject.transform.position = temp;
         }
 
-        if (_platform == Platform.EPlatform.Platform2)
+        if (platform == Platform.EPlatform.Platform2)
         {
             Vector3 temp = Platform1.position;
             temp.y += 5;
-            _collision.gameObject.transform.position = temp;
+            collision.gameObject.transform.position = temp;
         }
 
         this.TimeForNextTeleport = Time.time + Cooldown;

@@ -94,11 +94,11 @@ public class LightControl : MonoBehaviour
         return listOfAllMesh.ToArray();
     }
 
-    private bool CheckIfLayerHit(IEnumerable<RaycastHit> _raycastHits, int numberOfLayer)
+    private bool CheckIfLayerHit(IEnumerable<RaycastHit> raycastHits, int numberOfLayer)
     {
         bool isThereALayer = false;
 
-        foreach (RaycastHit hit in _raycastHits)
+        foreach (RaycastHit hit in raycastHits)
         {
             if (hit.collider.gameObject.layer == numberOfLayer) isThereALayer = true;
         }
@@ -106,9 +106,9 @@ public class LightControl : MonoBehaviour
         return isThereALayer;
     }
     
-    RaycastHit GetLayerObjectHit(IEnumerable<RaycastHit> _raycastHits, int numberOfLayer)
+    RaycastHit GetLayerObjectHit(IEnumerable<RaycastHit> raycastHits, int numberOfLayer)
     {
-        foreach (RaycastHit hit in _raycastHits)
+        foreach (RaycastHit hit in raycastHits)
         {
             if (hit.collider.gameObject.layer == numberOfLayer) return hit;
         }
@@ -116,13 +116,13 @@ public class LightControl : MonoBehaviour
         return new RaycastHit();
     }
     
-    private Vector3[] ConvertLocalToWorldVertices(Vector3[] _meshWorldVertices, Transform _objectTransform)
+    private Vector3[] ConvertLocalToWorldVertices(Vector3[] meshWorldVertices, Transform objectTransform)
     {
         List<Vector3> listOfVertices = new List<Vector3>();
         
-        foreach (Vector3 point in _meshWorldVertices)
+        foreach (Vector3 point in meshWorldVertices)
         {
-            Matrix4x4 localToWorld = _objectTransform.localToWorldMatrix;
+            Matrix4x4 localToWorld = objectTransform.localToWorldMatrix;
             Vector3 worldVertex = localToWorld.MultiplyPoint3x4(point);
 
             listOfVertices.Add(worldVertex);
@@ -131,11 +131,11 @@ public class LightControl : MonoBehaviour
         return listOfVertices.ToArray();
     }
     
-    private Vector3[] ComputeVerticesOnWall(Vector3[] _meshWorldVertices)
+    private Vector3[] ComputeVerticesOnWall(Vector3[] meshWorldVertices)
     {
         List<Vector3> listOfVertices = new List<Vector3>();
         
-        foreach (Vector3 point in _meshWorldVertices)
+        foreach (Vector3 point in meshWorldVertices)
         {
             Vector3 vectorLightToVertex = point - this.LightPosition;
 
@@ -152,12 +152,12 @@ public class LightControl : MonoBehaviour
         return listOfVertices.ToArray();
     }
 
-    private Vector3[] RemoveDuplicates(Vector3[] _array)
+    private Vector3[] RemoveDuplicates(Vector3[] array)
     {
         HashSet<Vector3> uniqueSet = new HashSet<Vector3>();
 
         List<Vector3> uniqueList = new List<Vector3>();
-        foreach (Vector3 vector in _array)
+        foreach (Vector3 vector in array)
         {
             if (uniqueSet.Add(vector))
             {
@@ -168,11 +168,11 @@ public class LightControl : MonoBehaviour
         return uniqueList.ToArray();
     }
 
-    private Vector3[] CreateGroundVertices(Vector3[] _vertices, Vector3 _hitPosition)
+    private Vector3[] CreateGroundVertices(Vector3[] vertices, Vector3 hitPosition)
     {
         List<Vector3> tempVertices = new List<Vector3>();
 
-        foreach (Vector3 vertex in _vertices)
+        foreach (Vector3 vertex in vertices)
         {
             tempVertices.Add(vertex);
 
@@ -186,11 +186,11 @@ public class LightControl : MonoBehaviour
     }
     
     // Nur eine ausgelagerte Funktion, die nicht mehr gebraucht wird
-    void CreateTriangles(Vector3[] _vertices)
+    void CreateTriangles(Vector3[] vertices)
     {
-        int[] triangles = new int[(_vertices.Length - 2) * 3];
+        int[] triangles = new int[(vertices.Length - 2) * 3];
 
-        for (int i = 0; i < _vertices.Length - 2; i++)
+        for (int i = 0; i < vertices.Length - 2; i++)
         {
             triangles[i * 3] = 0;
             triangles[i * 3 + 1] = i + 1;
@@ -198,24 +198,24 @@ public class LightControl : MonoBehaviour
         }
     }
     
-    Vector3[] CreateDepthVertices(Vector3[] _vertices, Vector3 _wallNormal)
+    Vector3[] CreateDepthVertices(Vector3[] vertices, Vector3 wallNormal)
     {
         List<Vector3> tempVertices = new List<Vector3>();
 
-        foreach (Vector3 vertex in _vertices)
+        foreach (Vector3 vertex in vertices)
         {
             tempVertices.Add(vertex);
-            tempVertices.Add(vertex + _wallNormal * this.ShadowDepth);
+            tempVertices.Add(vertex + wallNormal * this.ShadowDepth);
         }
 
         return tempVertices.ToArray();
     }
 
-    void SetNewMesh(Vector3[] _depthVertices)
+    void SetNewMesh(Vector3[] depthVertices)
     {
         Mesh shadowMesh = new Mesh();
         
-        shadowMesh.vertices = _depthVertices;
+        shadowMesh.vertices = depthVertices;
         //shadowMesh.triangles = triangles;
         
         shadowMesh.RecalculateNormals();

@@ -77,12 +77,12 @@ namespace Player.Scripts
             this.Rigidbody.AddForce(velocity);
         }
 
-        public override void Move(InputAction.CallbackContext _context)
+        public override void Move(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
             if (this.AnimationStarted) return;
 
-            this.MovementInput = _context.ReadValue<Vector2>();
+            this.MovementInput = context.ReadValue<Vector2>();
 
             // Manipulate the input if the player is dragging an object
             if (this.IsDragging)
@@ -92,12 +92,12 @@ namespace Player.Scripts
             }
         }
 
-        public override void EndMove(InputAction.CallbackContext _context)
+        public override void EndMove(InputAction.CallbackContext context)
         {
-            this.MovementInput = _context.ReadValue<Vector2>();
+            this.MovementInput = context.ReadValue<Vector2>();
         }
 
-        public override void Jump(InputAction.CallbackContext _context)
+        public override void Jump(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
             if (this.IsDragging) return;
@@ -105,7 +105,7 @@ namespace Player.Scripts
             this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
         }
 
-        public override void EndJump(InputAction.CallbackContext _context)
+        public override void EndJump(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
             if (this.IsDragging) return;

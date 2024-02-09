@@ -9,7 +9,7 @@ public class GameSettings : ScriptableObject
 {
     [SerializeField] public float MasterVolume;
     [SerializeField] public float MusicVolume;
-    [SerializeField] public float SFXVolume;
+    [SerializeField] public float SfxVolume;
     [SerializeField] public float VoiceVolume;
     [SerializeField] public float AmbientVolume;
     
@@ -45,7 +45,7 @@ public class GameSettings : ScriptableObject
     {
         this.MasterVolume = 1;
         this.MusicVolume = 1;
-        this.SFXVolume = 1;
+        this.SfxVolume = 1;
         this.VoiceVolume = 1;
         this.AmbientVolume = 1;
     }
@@ -60,9 +60,9 @@ public class GameSettings : ScriptableObject
         MusicVolume = volume;
     }
 
-    public void SetSFXVolume(float volume)
+    public void SetSfxVolume(float volume)
     {
-        SFXVolume = volume;
+        this.SfxVolume = volume;
     }
 
     public void SetVoiceVolume(float volume)
@@ -85,9 +85,9 @@ public class GameSettings : ScriptableObject
         return MusicVolume;
     }
 
-    public float GetSFXVolume()
+    public float GetSfxVolume()
     {
-        return SFXVolume;
+        return this.SfxVolume;
     }
 
     public float GetVoiceVolume()

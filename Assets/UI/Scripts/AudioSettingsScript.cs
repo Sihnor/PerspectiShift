@@ -7,7 +7,7 @@ public class AudioSettingsScript : MonoBehaviour
 {
     [SerializeField] private Slider MasterVolumeSlider;
     [SerializeField] private Slider MusicVolumeSlider;
-    [SerializeField] private Slider SFXVolumeSlider;
+    [SerializeField] private Slider SfxVolumeSlider;
     [SerializeField] private Slider VoiceVolumeSlider;
     [SerializeField] private Slider AmbientVolumeSlider;
 
@@ -18,13 +18,13 @@ public class AudioSettingsScript : MonoBehaviour
     {
         this.MasterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
         this.MusicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
-        this.SFXVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+        this.SfxVolumeSlider.onValueChanged.AddListener(SetSfxVolume);
         this.VoiceVolumeSlider.onValueChanged.AddListener(SetVoiceVolume);
         this.AmbientVolumeSlider.onValueChanged.AddListener(SetAmbientVolume);
         
         this.MasterVolumeSlider.value = this.GameSettings.GetMasterVolume();
         this.MusicVolumeSlider.value = this.GameSettings.GetMusicVolume();
-        this.SFXVolumeSlider.value = this.GameSettings.GetSFXVolume();
+        this.SfxVolumeSlider.value = this.GameSettings.GetSfxVolume();
         this.VoiceVolumeSlider.value = this.GameSettings.GetVoiceVolume();
         this.AmbientVolumeSlider.value = this.GameSettings.GetAmbientVolume();
     }
@@ -39,9 +39,9 @@ public class AudioSettingsScript : MonoBehaviour
         this.GameSettings.SetMusicVolume(volume);
     }
     
-    private void SetSFXVolume(float volume)
+    private void SetSfxVolume(float volume)
     {
-        this.GameSettings.SetSFXVolume(volume);
+        this.GameSettings.SetSfxVolume(volume);
     }
     
     private void SetVoiceVolume(float volume)

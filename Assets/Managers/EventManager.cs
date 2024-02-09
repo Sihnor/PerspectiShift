@@ -12,7 +12,6 @@ public class EventManager : MonoBehaviour
     public event Action FOnDimensionSwitch; 
     public event Action<bool> FOnPlayDraggingAnimation;
     public event Action<bool> FOnEndDraggingAnimation;
-    public event Action FOnDraggable;
 
     private void Awake()
     {

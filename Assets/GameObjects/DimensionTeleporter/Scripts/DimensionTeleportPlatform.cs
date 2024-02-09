@@ -13,9 +13,9 @@ public class Platform : MonoBehaviour
     [SerializeField] public EPlatform PlatformNumber;
     
     
-    void OnCollisionEnter(Collision _collision)
+    void OnCollisionEnter(Collision collision)
     {
-        transform.parent.GetComponent<Teleport>().CollisionDetected(_collision, this.PlatformNumber);
+        transform.parent.GetComponent<Teleport>().CollisionDetected(collision, this.PlatformNumber);
     }
 
 }
