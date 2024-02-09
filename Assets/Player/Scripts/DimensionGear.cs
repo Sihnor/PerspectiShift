@@ -9,11 +9,13 @@ namespace Player.Scripts
 
         [SerializeField] public int Cooldown = 1;
 
-        private float TimeForNextSwitch = 0;
+        private float TimeForNextSwitch;
         
         private InputAction DimensionGearAction;
 
-        private bool LastFrameDimensionGearAvailable = false;
+        private bool LastTimeDimensionGearAvailable;
+        
+        private bool Is2D = false;
         
         private void Awake()
         {
@@ -50,6 +52,13 @@ namespace Player.Scripts
             Debug.DrawLine(transform.position, transform.position + transform.forward * 2, Color.red, 2f);
             if (!didItHit) return;
 
+            this.Is2D = !this.Is2D;
+
+            // When 2D the player is placed on the wall and when 3D the player is placed on the floor
+            if (this.Is2D) transform.position = hit.point + hit.normal * 0.1f;
+            else transform.position = hit.point + hit.normal * 2f;
+            
+            
             EventManager.Instance.OnDimensionSwitch();
             
             this.CameraControl2D.SetRotationToWall(hit.normal);
@@ -60,10 +69,10 @@ namespace Player.Scripts
         private void UpdateDimensionGearUI()
         {
             bool isDimensionGearAvailable = Physics.Raycast(transform.position, transform.forward, 2f, LayerMask.GetMask("ShadowWall"));
-            if (isDimensionGearAvailable == this.LastFrameDimensionGearAvailable) return;
+            if (isDimensionGearAvailable == this.LastTimeDimensionGearAvailable) return;
             
             EventManager.Instance.OnDimensionGearAvailable(isDimensionGearAvailable);
-            this.LastFrameDimensionGearAvailable = isDimensionGearAvailable;
+            this.LastTimeDimensionGearAvailable = isDimensionGearAvailable;
         }
     }
 }
