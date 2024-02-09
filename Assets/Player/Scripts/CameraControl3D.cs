@@ -6,7 +6,9 @@ namespace Player.Scripts
 {
     enum EPlayerState
     {
+        StartDragging,
         Dragging,
+        StopDragging,
         Normal
     }
 
@@ -26,6 +28,7 @@ namespace Player.Scripts
 
         private bool TargetCameraRotationReached = true;
         private Quaternion TargetCameraRotation = Quaternion.identity;
+        private Quaternion StartCameraRotation = Quaternion.identity;
 
         private bool TargetPlayerRotationReached = true;
         private Quaternion TargetPlayerRotation = Quaternion.identity;
@@ -37,8 +40,6 @@ namespace Player.Scripts
 
         private EPlayerState PlayerState = EPlayerState.Normal;
 
-        public bool IsDragging = false;
-
         [SerializeField, Range(1, 1000)] private int InterpolationSpeed = 10;
 
         public EViewMode ViewMode { get; set; }
@@ -47,12 +48,14 @@ namespace Player.Scripts
         {
             this.LookAction = this.PlayerInput.currentActionMap.FindAction("Look3D");
             this.LookControllerAction = this.PlayerInput.currentActionMap.FindAction("Look3DController");
+
+            EventManager.Instance.FOnPlayDraggingAnimation += SetIsStartDragging;
         }
 
         private void Start()
         {
-            this.LookAction.performed += _context => Look(_context, this.RotationSpeed);
-            this.LookControllerAction.performed += _context => Look(_context, this.RotationControllerSpeed);
+            this.LookAction.performed += context => Look(context, this.RotationSpeed);
+            this.LookControllerAction.performed += context => Look(context, this.RotationControllerSpeed);
 
             this.LookAction.canceled += EndLook;
             this.LookControllerAction.canceled += EndLook;
@@ -67,8 +70,13 @@ namespace Player.Scripts
 
             switch (this.PlayerState)
             {
+                case EPlayerState.StartDragging:
+                    DraggingAnimation();
+                    break;
                 case EPlayerState.Dragging:
-                    DraggingState();
+                    break;
+                case EPlayerState.StopDragging:
+                    DraggingAnimation();
                     break;
                 case EPlayerState.Normal:
                     NormalState();
@@ -78,120 +86,81 @@ namespace Player.Scripts
             }
         }
 
-        private void Look(InputAction.CallbackContext _context, float _rotationSpeed)
+        private void Look(InputAction.CallbackContext context, float rotationSpeed)
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
-            if (this.PlayerState == EPlayerState.Dragging) return;
+            if (this.PlayerState != EPlayerState.Normal) return;
 
-            this.RotationInput = _context.ReadValue<Vector2>();
+            this.RotationInput = context.ReadValue<Vector2>();
 
-            this.RotationInput.x *= _rotationSpeed;
+            this.RotationInput.x *= rotationSpeed;
         }
 
-        private void EndLook(InputAction.CallbackContext _context)
+        private void EndLook(InputAction.CallbackContext context)
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
 
-            this.RotationInput = _context.ReadValue<Vector2>();
+            this.RotationInput = context.ReadValue<Vector2>();
         }
 
-        public void SetIsDragging(bool _isDragging)
+        /// <summary>
+        /// Regelt die PLayer States sowie die Target positions and rotationd der Kamera und des Spielers.
+        /// </summary>
+        /// <param name="startDragging"></param>
+        private void SetIsStartDragging(bool startDragging)
         {
-            this.IsDragging = _isDragging;
-
+            if (this.PlayerState == EPlayerState.Normal)
+            {
+                this.StartCameraRotation = this.Camera.transform.rotation;
+            }
+            
+            if (startDragging)
+            {
+                this.PlayerState = EPlayerState.StartDragging;
+                
+                this.TargetPlayerRotation = Quaternion.LookRotation((this.Player.GetComponent<DragShadowObject>().GetGrabbedObject().normal * -1), this.Player.transform.up);
+                this.TargetCameraPosition = this.Player.position + this.Camera.transform.TransformDirection(new Vector3(0.0f, 2.75f, -3.0f));
+                this.TargetCameraRotation = this.StartCameraRotation * Quaternion.Euler(30, 0, 0);
+            }
+            
+            if (!startDragging)
+            {
+                this.PlayerState = EPlayerState.StopDragging;
+                this.TargetCameraPosition = this.Player.position + new Vector3(0.0f, 0.85f, -0.18f);
+                this.TargetCameraRotation = this.StartCameraRotation;
+            }
+            
+            this.TargetPlayerRotationReached = false;
             this.TargetCameraPositionReached = false;
             this.TargetCameraRotationReached = false;
+        }
 
-            if (this.IsDragging)
+        /// <summary>
+        /// Eine State Machine die die Animation zum greifen und loslassen des Spielers regelt.
+        /// </summary>
+        private void DraggingAnimation()
+        {
+            bool isFinished1 = InterpolatePlayerRotation();
+            bool isFinished2 = InterpolateCameraPosition();
+            bool isFinished3 = InterpolateCameraRotation();
+
+            if (isFinished1 && isFinished2 && isFinished3 && this.PlayerState == EPlayerState.StartDragging)
             {
                 this.PlayerState = EPlayerState.Dragging;
-                this.TargetPlayerRotationReached = false;
-                this.TargetPlayerRotation = Quaternion.LookRotation((this.Player.GetComponent<DragShadowObject>().GetGrabbedObject().normal * -1),
-                    this.Player.transform.up);
-                this.TargetCameraPosition = transform.position + this.Camera.transform.TransformDirection(new Vector3(0.0f, 0.75f, -3.0f));
-                this.TargetCameraRotation = this.Camera.transform.rotation * Quaternion.Euler(15, 0, 0);
-
+                EventManager.Instance.OnEndDraggingAnimation(true);
             }
 
-            if (!this.IsDragging)
-            {
-                this.TargetCameraPosition = transform.position + new Vector3(0.0f, 0.0f, 0.0f);
-                this.TargetCameraRotation = this.Camera.transform.rotation * Quaternion.Euler(-15.0f, 0.0f, 0.0f);
-            }
-        }
-
-        private void DraggingState()
-        {
-            bool isFinished3 = InterpolatePlayerRotation();
-            bool isFinished1 = InterpolateCameraPosition();
-            bool isFinished2 = InterpolateCameraRotation();
-
-            if (isFinished1 && isFinished2 && isFinished3 && !this.IsDragging)
+            if (isFinished1 && isFinished2 && isFinished3 && this.PlayerState == EPlayerState.StopDragging)
             {
                 this.PlayerState = EPlayerState.Normal;
+                EventManager.Instance.OnEndDraggingAnimation(false);
             }
         }
 
-        private void NormalState()
-        {
-            // Pitch Rotation
-            float temp = this.TargetPlayerRotation.eulerAngles.y;
-            temp += this.RotationInput.x;
-
-            this.TargetCameraRotation.x -= this.RotationInput.y;
-            this.TargetCameraRotation.x = Mathf.Clamp(this.TargetCameraRotation.x, -70, 70);
-
-            // Yaw Rotation
-            this.Player.rotation = Quaternion.Euler(this.TargetPlayerRotation.eulerAngles);
-            this.TargetPlayerRotation = Quaternion.Euler(this.TargetPlayerRotation.eulerAngles.x, temp, this.TargetPlayerRotation.eulerAngles.z);
-
-            // Camera Rotation
-            transform.rotation = Quaternion.Euler(new Vector3(this.TargetCameraRotation.x, temp, 0));
-        }
-
-        private bool InterpolateCameraPosition()
-        {
-            if (this.TargetCameraPositionReached) return true;
-            const float tolerance = 0.01f;
-
-            this.Camera.transform.position = Vector3.Lerp(this.Camera.transform.position, this.TargetCameraPosition, InterpolationSpeed * Time.deltaTime);
-
-            if (Mathf.Abs(this.TargetCameraPosition.x - this.Camera.transform.position.x) < tolerance &&
-                Mathf.Abs(this.TargetCameraPosition.y - this.Camera.transform.position.y) < tolerance &&
-                Mathf.Abs(this.TargetCameraPosition.z - this.Camera.transform.position.z) < tolerance)
-            {
-                this.TargetCameraPositionReached = true;
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool InterpolateCameraRotation()
-        {
-            if (this.TargetCameraRotationReached) return true;
-            const float tolerance = 0.001f;
-
-            Quaternion temp = Quaternion.Lerp(this.Camera.transform.rotation, this.TargetCameraRotation, InterpolationSpeed * Time.deltaTime);
-            this.Camera.transform.rotation = temp;
-
-            if (Mathf.Abs(Quaternion.Dot(this.Camera.transform.rotation, this.TargetCameraRotation)) > tolerance)
-            {
-                this.TargetCameraRotationReached = true;
-                return true;
-            }
-
-            //if (Mathf.Abs(this.TargetCameraRotation.eulerAngles.x - this.Camera.transform.localRotation.eulerAngles.x) < tolerance &&
-            //    Mathf.Abs(this.TargetCameraRotation.eulerAngles.y - this.Camera.transform.localRotation.eulerAngles.y) < tolerance &&
-            //    Mathf.Abs(this.TargetCameraRotation.eulerAngles.z - this.Camera.transform.localRotation.eulerAngles.z) < tolerance)
-            //{
-            //    this.TargetCameraRotationReached = true;
-            //    return true;
-            //}
-
-            return false;
-        }
-
+        /// <summary>
+        /// Interpoliert den Spieler das er sich senkrecht zum objekt bewegt.
+        /// </summary>
+        /// <returns></returns>
         private bool InterpolatePlayerRotation()
         {
             if (this.TargetPlayerRotationReached) return true;
@@ -209,6 +178,76 @@ namespace Player.Scripts
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Interpoliert die Kamera das sie sich zu der Zielposition bewegt.
+        /// </summary>
+        /// <returns></returns>
+        private bool InterpolateCameraPosition()
+        {
+            if (this.TargetCameraPositionReached) return true;
+            const float tolerance = 0.01f;
+
+            this.Camera.transform.position = Vector3.Lerp(this.Camera.transform.position, this.TargetCameraPosition, InterpolationSpeed * Time.deltaTime);
+            
+
+            if (Mathf.Abs(this.TargetCameraPosition.x - this.Camera.transform.position.x) < tolerance &&
+                Mathf.Abs(this.TargetCameraPosition.y - this.Camera.transform.position.y) < tolerance &&
+                Mathf.Abs(this.TargetCameraPosition.z - this.Camera.transform.position.z) < tolerance)
+            {
+                this.TargetCameraPositionReached = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Interpoliert die Kamera das sie sich zu der Zielrotation bewegt.
+        /// </summary>
+        /// <returns></returns>
+        private bool InterpolateCameraRotation()
+        {
+            if (this.TargetCameraRotationReached) return true;
+            const float tolerance = 0.001f;
+
+            Vector3 cameraRotation = this.Camera.transform.rotation.eulerAngles;
+            Vector3 targetCameraRotation = this.TargetCameraRotation.eulerAngles;
+            
+            Vector3 interpolatedRotation = Vector3.Lerp(cameraRotation, targetCameraRotation, InterpolationSpeed * Time.deltaTime);
+            this.Camera.transform.rotation = Quaternion.Euler(interpolatedRotation);
+
+            if (Mathf.Abs(cameraRotation.x - targetCameraRotation.x) < tolerance &&
+                Mathf.Abs(cameraRotation.y - targetCameraRotation.y) < tolerance &&
+                Mathf.Abs(cameraRotation.z - targetCameraRotation.z) < tolerance)
+            {
+                this.TargetCameraRotationReached = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Der Normal State ist der normale Zustand des Spielers.
+        /// Regelt die Yaw Rotations des Spielers und die Roll Rotation der Kamera.
+        /// </summary>
+        private void NormalState()
+        {
+            // Pitch Rotation
+            float temp = this.TargetPlayerRotation.eulerAngles.y;
+            temp += this.RotationInput.x;
+
+            this.TargetCameraRotation.x -= this.RotationInput.y;
+            this.TargetCameraRotation.x = Mathf.Clamp(this.TargetCameraRotation.x, -70, 70);
+
+            // Yaw Rotation
+            this.Player.rotation = Quaternion.Euler(this.TargetPlayerRotation.eulerAngles);
+            this.TargetPlayerRotation = Quaternion.Euler(this.TargetPlayerRotation.eulerAngles.x, temp, this.TargetPlayerRotation.eulerAngles.z);
+
+            // Camera Rotation
+            transform.rotation = Quaternion.Euler(new Vector3(this.TargetCameraRotation.x, temp, 0));
         }
     }
 }

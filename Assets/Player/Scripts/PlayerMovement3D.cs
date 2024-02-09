@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +9,8 @@ namespace Player.Scripts
 {
     public class PlayerMovement3D : Movement
     {
-        private bool IsDragging = false;
+        private bool IsDragging;
+        private bool AnimationStarted = false;
         
         public override EViewMode ViewMode
         {
@@ -33,6 +36,10 @@ namespace Player.Scripts
 
             this.MoveAction = this.PlayerInput.currentActionMap.FindAction("Move3D");
             this.JumpAction = this.PlayerInput.currentActionMap.FindAction("Jump3D");
+
+            EventManager.Instance.FOnPlayDraggingAnimation += SetIsDraggingAnimation;
+            EventManager.Instance.FOnEndDraggingAnimation += SetIsDragging;
+
         }
 
         // Start is called before the first frame update
@@ -73,13 +80,13 @@ namespace Player.Scripts
         public override void Move(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
+            if (this.AnimationStarted) return;
 
             this.MovementInput = _context.ReadValue<Vector2>();
 
             // Manipulate the input if the player is dragging an object
             if (this.IsDragging)
             {
-                Debug.Log(this.IsDragging);
                 this.MovementInput.x = 0;
                 this.MovementInput.y *= 0.6f;
             }
@@ -93,16 +100,15 @@ namespace Player.Scripts
         public override void Jump(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
-
-            float time = 0f;
+            if (this.IsDragging) return;
             
-
             this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
         }
 
         public override void EndJump(InputAction.CallbackContext _context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
+            if (this.IsDragging) return;
 
             this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed, 0), ForceMode.Impulse);
         }
@@ -138,10 +144,15 @@ namespace Player.Scripts
                 this.Rigidbody.drag = 0;
             }
         }
-        
-        public void SetIsDragging(bool _isDragging)
+
+        private void SetIsDraggingAnimation(bool startDraggingAnimation)
         {
-            this.IsDragging = _isDragging;
+            this.AnimationStarted = true;
+        }
+        private void SetIsDragging(bool isDragging)
+        {
+            this.AnimationStarted = false;
+            this.IsDragging = isDragging;
         }
     }
 }

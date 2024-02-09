@@ -9,7 +9,10 @@ public class EventManager : MonoBehaviour
     
     public event Action<bool> FOnDimensionGearAvailable; 
     public event Action<bool> FOnDimensionGearPosses;
-    public event Action<bool> FOnDimensionSwitch; 
+    public event Action FOnDimensionSwitch; 
+    public event Action<bool> FOnPlayDraggingAnimation;
+    public event Action<bool> FOnEndDraggingAnimation;
+    public event Action FOnDraggable;
 
     private void Awake()
     {
@@ -31,6 +34,16 @@ public class EventManager : MonoBehaviour
     
     public void OnDimensionSwitch()
     {
-        FOnDimensionSwitch?.Invoke(true);
+        FOnDimensionSwitch?.Invoke();
+    }
+    
+    public void OnPlayDraggingAnimation(bool startDraggingAnimation)
+    {
+        FOnPlayDraggingAnimation?.Invoke(startDraggingAnimation);
+    }
+    
+    public void OnEndDraggingAnimation(bool startDragging)
+    {
+        FOnEndDraggingAnimation?.Invoke(startDragging);
     }
 }

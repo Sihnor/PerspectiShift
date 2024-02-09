@@ -6,21 +6,15 @@ public class DragShadowObject : MonoBehaviour
 {
     private PlayerInput PlayerInput;
     private InputAction DragAction;
-    private bool IsDragging = false;
+    private bool IsDragging;
 
     private RaycastHit Hit;
     private Vector3 DragOffset = Vector3.zero;
-
-    private PlayerMovement3D PlayerMovement3D;
-    private CameraControl3D CameraControl3D;
     
     private void Awake()
     {
         this.PlayerInput = GetComponent<PlayerInput>();
         this.DragAction = this.PlayerInput.currentActionMap.FindAction("DragShadowObject");
-        
-        this.PlayerMovement3D = GetComponent<PlayerMovement3D>();
-        this.CameraControl3D = GetComponentInChildren<CameraControl3D>();
     }
 
     // Start is called before the first frame update
@@ -39,9 +33,8 @@ public class DragShadowObject : MonoBehaviour
         }
     }
 
-    private void DragObject(InputAction.CallbackContext _context)
+    private void DragObject(InputAction.CallbackContext context)
     {
-        Debug.DrawLine(transform.position + transform.up, transform.position + transform.forward * 10f, Color.red, 1f);
         if (Physics.Raycast(transform.position + transform.up, transform.forward, out this.Hit, 10f, LayerMask.GetMask("ShadowObject")) 
             && this.Hit.collider.gameObject.CompareTag($"Draggable"))
         {
@@ -51,23 +44,16 @@ public class DragShadowObject : MonoBehaviour
             this.DragOffset -= this.Hit.normal * 0.02f;
             this.IsDragging = true;
 
-            this.PlayerMovement3D.SetIsDragging(true);
-            this.CameraControl3D.SetIsDragging(true);
+            EventManager.Instance.OnPlayDraggingAnimation(true);
         }
     }
     
-    private void StopDragObject(InputAction.CallbackContext _context)
+    private void StopDragObject(InputAction.CallbackContext context)
     {
         if (!this.IsDragging) return;
 
         this.IsDragging = false;
-        this.PlayerMovement3D.SetIsDragging(false);
-        this.CameraControl3D.SetIsDragging(false);
-    }
-    
-    public bool IsDragged()
-    {
-        return this.IsDragging;
+        EventManager.Instance.OnPlayDraggingAnimation(false);
     }
     
     public RaycastHit GetGrabbedObject()

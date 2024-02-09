@@ -21,7 +21,7 @@ public class CameraManager : MonoBehaviour
         EventManager.Instance.FOnDimensionSwitch += OnDimensionSwitch;
     }
 
-    private void OnDimensionSwitch(bool isSwitch)
+    private void OnDimensionSwitch()
     {
         this.ThreeDCamera.enabled = !this.ThreeDCamera.enabled;
         this.TwoDCamera.enabled = !this.TwoDCamera.enabled;
