@@ -41,7 +41,8 @@ public class DragShadowObject : MonoBehaviour
 
     private void DragObject(InputAction.CallbackContext _context)
     {
-        if (Physics.Raycast(transform.position, transform.forward, out this.Hit, 10f, LayerMask.GetMask("ShadowObject")) 
+        Debug.DrawLine(transform.position + transform.up, transform.position + transform.forward * 10f, Color.red, 1f);
+        if (Physics.Raycast(transform.position + transform.up, transform.forward, out this.Hit, 10f, LayerMask.GetMask("ShadowObject")) 
             && this.Hit.collider.gameObject.CompareTag($"Draggable"))
         {
             if (this.Hit.collider.gameObject.GetComponent<Draggable>().GetIsDraggable() == false) return;
@@ -53,12 +54,6 @@ public class DragShadowObject : MonoBehaviour
             this.PlayerMovement3D.SetIsDragging(true);
             this.CameraControl3D.SetIsDragging(true);
         }
-        //else
-        //{
-        //    this.IsDragging = false;
-        //    this.PlayerMovement3D.SetIsDragging(false);
-        //    this.CameraControl3D.SetIsDragging(false);
-        //}
     }
     
     private void StopDragObject(InputAction.CallbackContext _context)

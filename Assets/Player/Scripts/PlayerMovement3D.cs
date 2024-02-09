@@ -8,7 +8,6 @@ namespace Player.Scripts
     public class PlayerMovement3D : Movement
     {
         private bool IsDragging = false;
-        public AnimationCurve JumpCurve;
         
         public override EViewMode ViewMode
         {
@@ -80,6 +79,7 @@ namespace Player.Scripts
             // Manipulate the input if the player is dragging an object
             if (this.IsDragging)
             {
+                Debug.Log(this.IsDragging);
                 this.MovementInput.x = 0;
                 this.MovementInput.y *= 0.6f;
             }
