@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class LightControl : MonoBehaviour
 {
-    public float LightBeamRange = 0;
-    public bool IsLightOn = false;
+    private float LightBeamRange;
+    [SerializeField] private bool IsLightOn;
 
     private Light TempLight;
 
@@ -20,7 +20,7 @@ public class LightControl : MonoBehaviour
     private MeshCollider ShadowCollider;
     private MeshFilter ShadowMeshFilter;
     private MeshRenderer ShadowMeshRenderer;
-    public Material ShadowMeshMaterial;
+    private Material ShadowMeshMaterial;
     [SerializeField] private float ShadowDepth = 0.1f;
     
 
@@ -35,12 +35,14 @@ public class LightControl : MonoBehaviour
         this.Shadow = new GameObject("CustomCollider");
         this.ShadowCollider = this.Shadow.AddComponent<MeshCollider>();
         this.ShadowMeshFilter = this.Shadow.AddComponent<MeshFilter>();
-        //
+        
         this.ShadowMeshRenderer = this.Shadow.AddComponent<MeshRenderer>();
         this.ShadowMeshRenderer.material = this.ShadowMeshMaterial;
-        //
+        
         this.ShadowCollider.convex = true;
         this.ShadowCollider.cookingOptions = MeshColliderCookingOptions.CookForFasterSimulation;
+        
+        EventManager.Instance.FOnDimensionSwitch += OnDimensionSwitch;
     }
     
     private void FixedUpdate()
@@ -54,8 +56,6 @@ public class LightControl : MonoBehaviour
         RaycastHit[] raycastHit = Physics.RaycastAll(this.LightPosition, this.LightDirection, this.LightBeamRange,
             ((1 << LayerMask.NameToLayer("ShadowWall")) | (1 << LayerMask.NameToLayer("ShadowObject"))));
 
-        Debug.DrawLine(this.LightPosition, this.LightPosition + this.LightDirection, Color.magenta, .01f);
-        
         if (!CheckIfLayerHit(raycastHit, LayerMask.NameToLayer("ShadowWall"))) return;
         if(!CheckIfLayerHit(raycastHit, LayerMask.NameToLayer("ShadowObject"))) return;
         
@@ -65,8 +65,9 @@ public class LightControl : MonoBehaviour
 
         Vector3[] meshWorldVertices = ConvertLocalToWorldVertices(meshLocalVertices, objectHit.collider.transform);
         
+        // If I want the vertices in the world space
         //Vector3[] verticesOnWall = RemoveDuplicates(meshWorldVertices);
-        Vector3[] verticesOnWall = RemoveDuplicates(ComputeVerticesOnWall(meshWorldVertices));
+        Vector3[] verticesOnWall = ComputeVerticesOnWall(RemoveDuplicates(meshWorldVertices));
         
         Vector3[] verticesToGround = CreateGroundVertices(verticesOnWall, objectHit.point);
         
@@ -223,5 +224,10 @@ public class LightControl : MonoBehaviour
         this.ShadowMeshFilter.mesh = shadowMesh;
 
         this.ShadowCollider.sharedMesh = shadowMesh;
+    }
+    
+    private void OnDimensionSwitch()
+    {
+        this.IsLightOn = !this.IsLightOn;
     }
 }

@@ -55,7 +55,7 @@ namespace Player.Scripts
             this.Is2D = !this.Is2D;
 
             // When 2D the player is placed on the wall and when 3D the player is placed on the floor
-            if (this.Is2D) transform.position = hit.point + hit.normal * 0.1f;
+            if (this.Is2D) transform.position = hit.point + hit.normal * 0.3f;
             else transform.position = hit.point + hit.normal * 2f;
             
             

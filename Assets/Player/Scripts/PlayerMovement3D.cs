@@ -88,7 +88,7 @@ namespace Player.Scripts
             if (this.IsDragging)
             {
                 this.MovementInput.x = 0;
-                this.MovementInput.y *= 0.6f;
+                this.MovementInput.y *= 0.5f;
             }
         }
 
@@ -148,6 +148,7 @@ namespace Player.Scripts
         private void SetIsDraggingAnimation(bool startDraggingAnimation)
         {
             this.AnimationStarted = true;
+            this.MovementInput = Vector2.zero;
         }
         private void SetIsDragging(bool isDragging)
         {

@@ -25,6 +25,7 @@ namespace Player.Scripts
         // Interpolation
         private bool TargetCameraPositionReached = true;
         private Vector3 TargetCameraPosition = Vector3.zero;
+        private Vector3 StartCameraPosition = Vector3.zero;
 
         private bool TargetCameraRotationReached = true;
         private Quaternion TargetCameraRotation = Quaternion.identity;
@@ -112,6 +113,7 @@ namespace Player.Scripts
             if (this.PlayerState == EPlayerState.Normal)
             {
                 this.StartCameraRotation = this.Camera.transform.rotation;
+                this.StartCameraPosition = this.Camera.transform.position - this.Player.position;
             }
             
             if (startDragging)
@@ -126,7 +128,8 @@ namespace Player.Scripts
             if (!startDragging)
             {
                 this.PlayerState = EPlayerState.StopDragging;
-                this.TargetCameraPosition = this.Player.position + new Vector3(0.0f, 0.85f, -0.18f);
+                //this.TargetCameraPosition = this.Player.position + new Vector3(0.0f, 0.85f, -0.18f);
+                this.TargetCameraPosition = this.Player.position + this.StartCameraPosition;
                 this.TargetCameraRotation = this.StartCameraRotation;
             }
             
@@ -141,17 +144,25 @@ namespace Player.Scripts
         private void DraggingAnimation()
         {
             bool isFinished1 = InterpolatePlayerRotation();
+            if (!isFinished1) return;
             bool isFinished2 = InterpolateCameraPosition();
+            if (!isFinished2) return;
             bool isFinished3 = InterpolateCameraRotation();
 
             if (isFinished1 && isFinished2 && isFinished3 && this.PlayerState == EPlayerState.StartDragging)
             {
+                this.Player.transform.rotation = this.TargetPlayerRotation;
+                this.Camera.transform.position = this.TargetCameraPosition;
+                this.Camera.transform.rotation = this.TargetCameraRotation;
                 this.PlayerState = EPlayerState.Dragging;
                 EventManager.Instance.OnEndDraggingAnimation(true);
             }
 
             if (isFinished1 && isFinished2 && isFinished3 && this.PlayerState == EPlayerState.StopDragging)
             {
+                this.Player.transform.rotation = this.TargetPlayerRotation;
+                this.Camera.transform.position = this.TargetCameraPosition;
+                this.Camera.transform.rotation = this.TargetCameraRotation;
                 this.PlayerState = EPlayerState.Normal;
                 EventManager.Instance.OnEndDraggingAnimation(false);
             }

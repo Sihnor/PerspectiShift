@@ -8,7 +8,7 @@ public class Draggable : MonoBehaviour
 {
     bool IsDraggable = false;
     
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         this.IsDraggable = true;
     }
