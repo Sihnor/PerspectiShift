@@ -12,6 +12,9 @@ public class EventManager : MonoBehaviour
     public event Action FOnDimensionSwitch; 
     public event Action<bool> FOnPlayDraggingAnimation;
     public event Action<bool> FOnEndDraggingAnimation;
+    public event Action FOnDamagePlayer;
+    public event Action FOnPrisonOpen;
+    public event Action FOnPlayerDeath;
 
     private void Awake()
     {
@@ -44,5 +47,20 @@ public class EventManager : MonoBehaviour
     public void OnEndDraggingAnimation(bool startDragging)
     {
         FOnEndDraggingAnimation?.Invoke(startDragging);
+    }
+    
+    public void OnPrisonOpen()
+    {
+        FOnPrisonOpen?.Invoke();
+    }
+    
+    public void OnDamagePlayer()
+    {
+        FOnDamagePlayer?.Invoke();
+    }
+    
+    public void OnPlayerDeath()
+    {
+        FOnPlayerDeath?.Invoke();
     }
 }

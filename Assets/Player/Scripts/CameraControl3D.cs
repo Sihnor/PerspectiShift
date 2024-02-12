@@ -144,9 +144,9 @@ namespace Player.Scripts
         private void DraggingAnimation()
         {
             bool isFinished1 = InterpolatePlayerRotation();
-            if (!isFinished1) return;
+            //if (!isFinished1) return;
             bool isFinished2 = InterpolateCameraPosition();
-            if (!isFinished2) return;
+            //if (!isFinished2) return;
             bool isFinished3 = InterpolateCameraRotation();
 
             if (isFinished1 && isFinished2 && isFinished3 && this.PlayerState == EPlayerState.StartDragging)
