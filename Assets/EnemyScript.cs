@@ -10,10 +10,11 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private BoxCollider DamageTrigger;
     [SerializeField] private Transform PlayerPosition;
 
+    [SerializeField, Range(0.1f, 5)] private float Speed = 5f;
     private bool HitPlayer = false;
     private bool IsActivated = false;
-    [SerializeField, Range(0.1f, 5)] private float Speed = 5f;
-    
+
+    private Vector3 OldPosition;
 
     private void Awake()
     {
@@ -65,6 +66,18 @@ public class EnemyScript : MonoBehaviour
     {
         this.Renderer.enabled = !this.Renderer.enabled;
         this.ReceiveTrigger.enabled = !this.ReceiveTrigger.enabled;
+
+        if (this.Renderer.enabled)
+        {
+            this.OldPosition = transform.position;
+            transform.position = new Vector3(this.PlayerPosition.position.x, transform.position.y, transform.position.z);
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        else
+        {
+            transform.position = new Vector3(this.OldPosition.x, transform.position.y, transform.position.z);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     private void OnOpenPrison()
