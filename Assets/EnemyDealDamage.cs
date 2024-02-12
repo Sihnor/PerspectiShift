@@ -9,11 +9,13 @@ public class EnemyDealDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player")) return;
         this.EnemyScript.EnterDamageTrigger();
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player")) return;
         this.EnemyScript.ExitDamageTrigger();
     }
 }

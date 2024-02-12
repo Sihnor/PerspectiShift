@@ -8,10 +8,12 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private SpriteRenderer Renderer;
     [SerializeField] private BoxCollider ReceiveTrigger;
     [SerializeField] private BoxCollider DamageTrigger;
-    [SerializeField] private Vector3 PlayerPosition;
+    [SerializeField] private Transform PlayerPosition;
 
     private bool HitPlayer = false;
-    private const float Speed = 5f;
+    private bool IsActivated = false;
+    [SerializeField, Range(0.1f, 5)] private float Speed = 5f;
+    
 
     private void Awake()
     {
@@ -23,13 +25,11 @@ public class EnemyScript : MonoBehaviour
 
     private void Update()
     {
-        if (this.HitPlayer)
+        if(!this.IsActivated) return;
+        
+        if (!this.HitPlayer)
         {
-
-        }
-        else
-        {
-            //transform.position = Vector3.MoveTowards(transform.position, PlayerPosition, Speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, this.PlayerPosition.position, Speed * Time.deltaTime);
         }
     }
 
@@ -72,5 +72,6 @@ public class EnemyScript : MonoBehaviour
         this.Renderer.enabled = false;
         this.gameObject.transform.position = new Vector3(-14.176f, 0.3f, 47.089f);
         this.DamageTrigger.enabled = true;
+        this.IsActivated = true;
     }
 }

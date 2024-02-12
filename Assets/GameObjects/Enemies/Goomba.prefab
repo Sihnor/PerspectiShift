@@ -115,7 +115,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1947439864112113272}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -184,7 +184,8 @@ MonoBehaviour:
   Renderer: {fileID: 973022743305864166}
   ReceiveTrigger: {fileID: 8974545409115255000}
   DamageTrigger: {fileID: 7790554384359721849}
-  PlayerPosition: {x: 0, y: 0, z: 0}
+  PlayerPosition: {fileID: 0}
+  Speed: 0.23
 --- !u!1 &8235029854728790666
 GameObject:
   m_ObjectHideFlags: 0
