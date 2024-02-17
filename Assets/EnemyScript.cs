@@ -64,6 +64,7 @@ public class EnemyScript : MonoBehaviour
 
     private void OnDimensionSwitch()
     {
+        if(!this.IsActivated) return;
         this.Renderer.enabled = !this.Renderer.enabled;
         this.ReceiveTrigger.enabled = !this.ReceiveTrigger.enabled;
 

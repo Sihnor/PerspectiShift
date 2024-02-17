@@ -33,7 +33,7 @@ namespace Player.Scripts
             if (this.ViewMode == EViewMode.ThreeDimension) return;
             if (this.IsOnWall) return;
 
-            this.Player.transform.Rotate(Vector3.up, 90 * context.ReadValue<Vector2>().x);
+            this.Player.transform.Rotate(Vector3.up, -90 * context.ReadValue<Vector2>().x);
         }
 
         public void SetRotationToWall(Vector3 normal)
