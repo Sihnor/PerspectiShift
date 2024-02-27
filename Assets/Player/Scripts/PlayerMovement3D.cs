@@ -84,7 +84,7 @@ namespace Player.Scripts
             if (this.IsDragging)
             {
                 this.MovementInput.x = 0;
-                this.MovementInput.y *= 0.5f;
+                this.MovementInput.y *= 0.09f;
             }
         }
 
@@ -135,7 +135,6 @@ namespace Player.Scripts
             if (this.IsGrounded)
             {
                 this.Rigidbody.drag = this.DragForce;
-                Debug.Log("Grounded");
             }
             else
             {
