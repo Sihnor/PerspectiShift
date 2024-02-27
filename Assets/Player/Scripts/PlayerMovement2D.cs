@@ -64,7 +64,7 @@ namespace Player.Scripts
             if (!this.IsGrounded)
             {
                 velocity.x *= 0.1f;
-                
+                velocity.z *= 0.1f;
             }
             
             this.Rigidbody.AddForce(velocity);
@@ -124,7 +124,6 @@ namespace Player.Scripts
 
             if (this.IsGrounded)
             {
-                Debug.Log("Grounded");
                 this.Rigidbody.drag = this.DragForce;
             }
             else
