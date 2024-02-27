@@ -18,8 +18,10 @@ namespace Player.Scripts
         [SerializeField] private Transform Player;
 
         // Rotation
-        [SerializeField] private float RotationSpeed = .1f;
-        [SerializeField] private float RotationControllerSpeed = 10f;
+        [SerializeField] private float RotationSpeedX = .1f;
+        [SerializeField] private float RotationSpeedY = .1f;
+        [SerializeField] private float RotationControllerSpeedX = 10f;
+        [SerializeField] private float RotationControllerSpeedY = 10f;
         private Vector2 RotationInput;
 
         // Interpolation
@@ -55,8 +57,8 @@ namespace Player.Scripts
 
         private void Start()
         {
-            this.LookAction.performed += context => Look(context, this.RotationSpeed);
-            this.LookControllerAction.performed += context => Look(context, this.RotationControllerSpeed);
+            this.LookAction.performed += context => Look(context, this.RotationSpeedX, this.RotationSpeedY);
+            this.LookControllerAction.performed += context => Look(context, this.RotationControllerSpeedX, this.RotationControllerSpeedY);
 
             this.LookAction.canceled += EndLook;
             this.LookControllerAction.canceled += EndLook;
@@ -87,14 +89,15 @@ namespace Player.Scripts
             }
         }
 
-        private void Look(InputAction.CallbackContext context, float rotationSpeed)
+        private void Look(InputAction.CallbackContext context, float rotationSpeedX, float rotationSpeedY)
         {
             if (this.ViewMode != EViewMode.ThreeDimension) return;
             if (this.PlayerState != EPlayerState.Normal) return;
 
             this.RotationInput = context.ReadValue<Vector2>();
 
-            this.RotationInput.x *= rotationSpeed;
+            this.RotationInput.x *= rotationSpeedX;
+            this.RotationInput.y *= rotationSpeedY;
         }
 
         private void EndLook(InputAction.CallbackContext context)
