@@ -15,7 +15,7 @@ namespace Player.Scripts
         
         [Header("Grounded"), SerializeField]
         public float DragForce = 7;
-        protected LayerMask GroundLayerMask;
+        public LayerMask GroundLayerMask;
 
         protected Quaternion RotationBeforeSwitch;
         public virtual EViewMode ViewMode{ get; set;}

@@ -5,6 +5,8 @@ namespace Player.Scripts
 {
     public class PlayerMovement2D : Movement
     {
+        [SerializeField] private GameObject SpritePlayer;
+        
         public override EViewMode ViewMode
         {
             set
@@ -56,7 +58,7 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
-            Vector3 velocity = transform.right * (this.MovementInput.x * this.MoveSpeed * (1 / Time.deltaTime));
+            Vector3 velocity = this.SpritePlayer.transform.right * (this.MovementInput.x * this.MoveSpeed * (1 / Time.deltaTime));
             velocity.y = this.Rigidbody.velocity.y;
             
             if (!this.IsGrounded)
@@ -118,10 +120,11 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
             
-            this.IsGrounded = Physics.Raycast(transform.position, Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.GroundLayerMask);
+            this.IsGrounded = Physics.Raycast(transform.position + new Vector3(0,0.1f,0), Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.GroundLayerMask);
 
             if (this.IsGrounded)
             {
+                Debug.Log("Grounded");
                 this.Rigidbody.drag = this.DragForce;
             }
             else
