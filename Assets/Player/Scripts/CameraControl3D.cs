@@ -44,6 +44,8 @@ namespace Player.Scripts
         private EPlayerState PlayerState = EPlayerState.Normal;
 
         [SerializeField, Range(1, 1000)] private int InterpolationSpeed = 10;
+        
+        [SerializeField] private GameSettings GameSettings;
 
         public EViewMode ViewMode { get; set; }
 
@@ -57,6 +59,11 @@ namespace Player.Scripts
 
         private void Start()
         {
+            this.RotationSpeedX = this.GameSettings.MouseSensitivityX;
+            this.RotationSpeedY = this.GameSettings.MouseSensitivityY;
+            this.RotationControllerSpeedX = this.GameSettings.GamePadSensitivityX;
+            this.RotationControllerSpeedY = this.GameSettings.GamePadSensitivityY;
+            
             this.LookAction.performed += context => Look(context, this.RotationSpeedX, this.RotationSpeedY);
             this.LookControllerAction.performed += context => Look(context, this.RotationControllerSpeedX, this.RotationControllerSpeedY);
 

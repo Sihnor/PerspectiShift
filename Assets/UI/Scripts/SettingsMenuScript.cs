@@ -6,16 +6,11 @@ using UnityEngine.InputSystem;
 
 public class SettingsMenuScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Exit via escape or B/Kreis button
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton1))
         {
             SceneLoader.Instance.LoadSceneAsync(ESceneIndices.MainMenu, false);
         }

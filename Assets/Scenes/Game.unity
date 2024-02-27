@@ -279,6 +279,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.12
       objectReference: {fileID: 0}
+    - target: {fileID: 4925098722905588773, guid: 7f37652fdaafe124e8de692446552cdd, type: 3}
+      propertyPath: GameSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: a344a8946359a5845b19ae98238ce2dd, type: 2}
     - target: {fileID: 4978460676377796643, guid: 7f37652fdaafe124e8de692446552cdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -13,6 +13,11 @@ public class GameSettings : ScriptableObject
     [SerializeField] public float VoiceVolume;
     [SerializeField] public float AmbientVolume;
     
+    [SerializeField] public float MouseSensitivityX;
+    [SerializeField] public float MouseSensitivityY;
+    [SerializeField] public float GamePadSensitivityX;
+    [SerializeField] public float GamePadSensitivityY;
+    
     [Button("Save Settings")]
     public void SaveSettings()
     {
@@ -52,12 +57,12 @@ public class GameSettings : ScriptableObject
 
     public void SetMasterVolume(float volume)
     {
-        MasterVolume = volume;
+        this.MasterVolume = volume;
     }
 
     public void SetMusicVolume(float volume)
     {
-        MusicVolume = volume;
+        this.MusicVolume = volume;
     }
 
     public void SetSfxVolume(float volume)
@@ -67,22 +72,22 @@ public class GameSettings : ScriptableObject
 
     public void SetVoiceVolume(float volume)
     {
-        VoiceVolume = volume;
+        this.VoiceVolume = volume;
     }
 
     public void SetAmbientVolume(float volume)
     {
-        AmbientVolume = volume;
+        this.AmbientVolume = volume;
     }
 
     public float GetMasterVolume()
     {
-        return MasterVolume;
+        return this.MasterVolume;
     }
 
     public float GetMusicVolume()
     {
-        return MusicVolume;
+        return this.MusicVolume;
     }
 
     public float GetSfxVolume()
@@ -92,11 +97,51 @@ public class GameSettings : ScriptableObject
 
     public float GetVoiceVolume()
     {
-        return VoiceVolume;
+        return this.VoiceVolume;
     }
 
     public float GetAmbientVolume()
     {
-        return AmbientVolume;
+        return this.AmbientVolume;
+    }
+    
+    public void SetMouseSensitivityX(float sensitivity)
+    {
+        this.MouseSensitivityX = sensitivity;
+    }
+    
+    public void SetMouseSensitivityY(float sensitivity)
+    {
+        this.MouseSensitivityY = sensitivity;
+    }
+    
+    public void SetGamePadSensitivityX(float sensitivity)
+    {
+        this.GamePadSensitivityX = sensitivity;
+    }
+    
+    public void SetGamePadSensitivityY(float sensitivity)
+    {
+        this.GamePadSensitivityY = sensitivity;
+    }
+    
+    public float GetMouseSensitivityX()
+    {
+        return this.MouseSensitivityX;
+    }
+    
+    public float GetMouseSensitivityY()
+    {
+        return this.MouseSensitivityY;
+    }
+    
+    public float GetGamePadSensitivityX()
+    {
+        return this.GamePadSensitivityX;
+    }
+    
+    public float GetGamePadSensitivityY()
+    {
+        return this.GamePadSensitivityY;
     }
 }
