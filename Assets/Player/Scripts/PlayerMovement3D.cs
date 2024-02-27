@@ -97,6 +97,7 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
             if (this.IsDragging) return;
+            if (!this.IsGrounded) return;
             
             this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
         }
@@ -106,7 +107,7 @@ namespace Player.Scripts
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
             if (this.IsDragging) return;
 
-            this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed, 0), ForceMode.Impulse);
+            this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed * .5f, 0), ForceMode.Impulse);
         }
 
         protected override void SpeedControl()
@@ -129,11 +130,12 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
 
-            this.IsGrounded = Physics.Raycast(transform.position, Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.GroundLayerMask);
+            this.IsGrounded = Physics.Raycast(transform.position + new Vector3(0,0.1f,0), Vector3.down,  ((this.PlayerCollider.bounds.extents.y) * .5f), this.GroundLayerMask);
 
             if (this.IsGrounded)
             {
                 this.Rigidbody.drag = this.DragForce;
+                Debug.Log("Grounded");
             }
             else
             {

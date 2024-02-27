@@ -307,6 +307,10 @@ PrefabInstance:
       propertyPath: GroundLayerMask.m_Bits
       value: 128
       objectReference: {fileID: 0}
+    - target: {fileID: 7232035986506047936, guid: 7f37652fdaafe124e8de692446552cdd, type: 3}
+      propertyPath: GroundLayerMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 7283766526628283064, guid: 7f37652fdaafe124e8de692446552cdd, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
