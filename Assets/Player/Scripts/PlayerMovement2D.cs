@@ -24,6 +24,8 @@ namespace Player.Scripts
                 base.ViewMode = value;
             }
         }
+        
+        private bool UsedDoubleJump = false;
 
         protected override void Awake()
         {
@@ -85,10 +87,20 @@ namespace Player.Scripts
         public override void Jump(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
-            
+            if (!this.IsGrounded && this.UsedDoubleJump) return;
+
             if (context.performed)
             {
-                this.Rigidbody.AddForce(new Vector3(0,this.JumpSpeed,0), ForceMode.Impulse);
+                if (this.IsGrounded)
+                {
+                    this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
+                }
+                else
+                {
+                    this.Rigidbody.velocity = new Vector3(this.Rigidbody.velocity.x, 0, this.Rigidbody.velocity.z);
+                    this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed * .7f, 0), ForceMode.Impulse);
+                    this.UsedDoubleJump = true;
+                }
             }
         }
 
@@ -125,6 +137,7 @@ namespace Player.Scripts
             if (this.IsGrounded)
             {
                 this.Rigidbody.drag = this.DragForce;
+                this.UsedDoubleJump = false;
             }
             else
             {
