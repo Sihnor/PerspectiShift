@@ -21,7 +21,6 @@ public class LightControl : MonoBehaviour
     private Material ShadowMeshMaterial;
     [SerializeField] private float ShadowDepth = 0.1f;
     
-
     // Start is called before the first frame update
     private void Awake()
     {
@@ -31,6 +30,7 @@ public class LightControl : MonoBehaviour
         this.LightBeamRange = this.TempLight.range;
 
         this.Shadow = new GameObject("CustomCollider");
+        this.Shadow.layer = LayerMask.NameToLayer("Ground");
         this.ShadowCollider = this.Shadow.AddComponent<MeshCollider>();
         this.ShadowMeshFilter = this.Shadow.AddComponent<MeshFilter>();
         
