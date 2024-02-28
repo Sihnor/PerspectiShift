@@ -77,6 +77,15 @@ namespace Player.Scripts
             if (this.ViewMode != Scripts.EViewMode.TwoDimension) return;
 
             this.MovementInput = context.ReadValue<Vector2>();
+
+            if (this.MovementInput.x > 0)
+            {
+                this.SpritePlayer.GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else if (this.MovementInput.x < 0)
+            {
+                this.SpritePlayer.GetComponent<SpriteRenderer>().flipX = true;
+            }
         }
 
         public override void EndMove(InputAction.CallbackContext context)

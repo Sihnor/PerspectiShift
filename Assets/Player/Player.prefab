@@ -490,10 +490,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 8515433123296120957}
   Player: {fileID: 7283766526628283064}
-  RotationSpeed: 0.5
-  RotationControllerSpeed: 10
+  RotationSpeedX: 0.1
+  RotationSpeedY: 0.1
+  RotationControllerSpeedX: 10
+  RotationControllerSpeedY: 10
   PlayerInput: {fileID: 2543047897877328931}
   InterpolationSpeed: 10
+  GameSettings: {fileID: 0}
 --- !u!1 &8808957379273969864
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,6 +555,9 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpSpeed: 10
   DragForce: 7
+  GroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   SpritePlayer: {fileID: 5602402091070099282}
 --- !u!114 &7232035986506047936
 MonoBehaviour:
@@ -568,6 +574,9 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpSpeed: 7
   DragForce: 7
+  GroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &2210728711726597
 MonoBehaviour:
   m_ObjectHideFlags: 0
