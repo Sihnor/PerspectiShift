@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33212a12a3e10ca43b667e56be08ec79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartScene: 2
+  StartScene: 1
   LoadingScreenObject: {fileID: 2091551258}
   LoadingScreenImage: {fileID: 2091551259}
   LoadingScreenCurve:

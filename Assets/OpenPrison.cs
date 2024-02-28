@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class OpenPrison : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        EventManager.Instance.OnPrisonOpen();
-        GetComponent<BoxCollider>().enabled = false;
+        if (other.gameObject.CompareTag("Player"))
+        {
+            EventManager.Instance.OnPrisonOpen();
+            GetComponent<BoxCollider>().enabled = false;
+        }
+        
     }
 }
 
