@@ -15,7 +15,7 @@ public enum ESceneIndices
     Settings = 5,
     Loading = 6,
     Pause = 7,
-    _SampleScene = 8,
+    SampleScene = 8,
     None = 9
 }
 
