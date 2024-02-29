@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MasterVolume: 0.6962961
   MusicVolume: 0.31490192
-  SFXVolume: 1
+  SfxVolume: 0
   VoiceVolume: 0.8093027
   AmbientVolume: 0.1877697
+  MouseSensitivityX: 0.108
+  MouseSensitivityY: 0.108
+  GamePadSensitivityX: 6.4000006
+  GamePadSensitivityY: 6.4000006

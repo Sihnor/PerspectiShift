@@ -21,26 +21,28 @@ namespace Player.Scripts
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             this.SwitchPlaneAction.started += SwitchPlane;
 
             this.ViewMode = EViewMode.ThreeDimension;
         }
 
-        public void SwitchPlane(InputAction.CallbackContext _context)
+        public void SwitchPlane(InputAction.CallbackContext context)
         {
             if (this.ViewMode == EViewMode.ThreeDimension) return;
             if (this.IsOnWall) return;
 
-            this.Player.transform.Rotate(Vector3.up, 90 * _context.ReadValue<Vector2>().x);
+            this.Player.transform.Rotate(Vector3.up, -90 * context.ReadValue<Vector2>().x);
         }
 
-        public void SetRotationToWall(Vector3 _normal)
+        public void SetRotationToWall(Vector3 normal)
         {
-            Quaternion targetRotation = Quaternion.LookRotation( (_normal * -1), this.Player.transform.up);
+            Quaternion targetRotation = Quaternion.LookRotation( (normal * -1), this.Player.transform.up);
 
             this.Player.transform.rotation = targetRotation;
+            
+            Debug.Log($"targetRotation: {targetRotation.eulerAngles}");
             
             this.IsOnWall = true;
         }

@@ -197,7 +197,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MinimumLoadingTime: 5
+  MinimumLoadingTime: 2
 --- !u!4 &191478583
 Transform:
   m_ObjectHideFlags: 0
@@ -335,6 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a599eae77e187f48a618e82d60d1f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HasDimensionGear: 1
 --- !u!4 &1195594674
 Transform:
   m_ObjectHideFlags: 0

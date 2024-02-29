@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,8 +5,8 @@ namespace Player.Scripts
 {
     public class PlayerMovement3D : Movement
     {
-        private bool IsDragging = false;
-        public AnimationCurve JumpCurve;
+        private bool IsDragging;
+        private bool AnimationStarted = false;
         
         public override EViewMode ViewMode
         {
@@ -34,6 +32,10 @@ namespace Player.Scripts
 
             this.MoveAction = this.PlayerInput.currentActionMap.FindAction("Move3D");
             this.JumpAction = this.PlayerInput.currentActionMap.FindAction("Jump3D");
+
+            EventManager.Instance.FOnPlayDraggingAnimation += SetIsDraggingAnimation;
+            EventManager.Instance.FOnEndDraggingAnimation += SetIsDragging;
+
         }
 
         // Start is called before the first frame update
@@ -71,40 +73,41 @@ namespace Player.Scripts
             this.Rigidbody.AddForce(velocity);
         }
 
-        public override void Move(InputAction.CallbackContext _context)
+        public override void Move(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
+            if (this.AnimationStarted) return;
 
-            this.MovementInput = _context.ReadValue<Vector2>();
+            this.MovementInput = context.ReadValue<Vector2>();
 
             // Manipulate the input if the player is dragging an object
             if (this.IsDragging)
             {
                 this.MovementInput.x = 0;
-                this.MovementInput.y *= 0.6f;
+                this.MovementInput.y *= 0.09f;
             }
         }
 
-        public override void EndMove(InputAction.CallbackContext _context)
+        public override void EndMove(InputAction.CallbackContext context)
         {
-            this.MovementInput = _context.ReadValue<Vector2>();
+            this.MovementInput = context.ReadValue<Vector2>();
         }
 
-        public override void Jump(InputAction.CallbackContext _context)
+        public override void Jump(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
-
-            float time = 0f;
+            if (this.IsDragging) return;
+            if (!this.IsGrounded) return;
             
-
             this.Rigidbody.AddForce(new Vector3(0, this.JumpSpeed, 0), ForceMode.Impulse);
         }
 
-        public override void EndJump(InputAction.CallbackContext _context)
+        public override void EndJump(InputAction.CallbackContext context)
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
+            if (this.IsDragging) return;
 
-            this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed, 0), ForceMode.Impulse);
+            this.Rigidbody.AddForce(new Vector3(0, -this.JumpSpeed * .5f, 0), ForceMode.Impulse);
         }
 
         protected override void SpeedControl()
@@ -127,7 +130,7 @@ namespace Player.Scripts
         {
             if (this.ViewMode != Scripts.EViewMode.ThreeDimension) return;
 
-            this.IsGrounded = Physics.Raycast(transform.position, Vector3.down, this.PlayerCollider.bounds.extents.y + 0.2f, this.GroundLayerMask);
+            this.IsGrounded = Physics.Raycast(transform.position + new Vector3(0,0.1f,0), Vector3.down,  ((this.PlayerCollider.bounds.extents.y) * .5f), this.GroundLayerMask);
 
             if (this.IsGrounded)
             {
@@ -138,10 +141,16 @@ namespace Player.Scripts
                 this.Rigidbody.drag = 0;
             }
         }
-        
-        public void SetIsDragging(bool _isDragging)
+
+        private void SetIsDraggingAnimation(bool startDraggingAnimation)
         {
-            this.IsDragging = _isDragging;
+            this.AnimationStarted = true;
+            this.MovementInput = Vector2.zero;
+        }
+        private void SetIsDragging(bool isDragging)
+        {
+            this.AnimationStarted = false;
+            this.IsDragging = isDragging;
         }
     }
 }

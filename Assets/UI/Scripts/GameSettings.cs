@@ -9,9 +9,14 @@ public class GameSettings : ScriptableObject
 {
     [SerializeField] public float MasterVolume;
     [SerializeField] public float MusicVolume;
-    [SerializeField] public float SFXVolume;
+    [SerializeField] public float SfxVolume;
     [SerializeField] public float VoiceVolume;
     [SerializeField] public float AmbientVolume;
+    
+    [SerializeField] public float MouseSensitivityX;
+    [SerializeField] public float MouseSensitivityY;
+    [SerializeField] public float GamePadSensitivityX;
+    [SerializeField] public float GamePadSensitivityY;
     
     [Button("Save Settings")]
     public void SaveSettings()
@@ -45,58 +50,98 @@ public class GameSettings : ScriptableObject
     {
         this.MasterVolume = 1;
         this.MusicVolume = 1;
-        this.SFXVolume = 1;
+        this.SfxVolume = 1;
         this.VoiceVolume = 1;
         this.AmbientVolume = 1;
     }
 
     public void SetMasterVolume(float volume)
     {
-        MasterVolume = volume;
+        this.MasterVolume = volume;
     }
 
     public void SetMusicVolume(float volume)
     {
-        MusicVolume = volume;
+        this.MusicVolume = volume;
     }
 
-    public void SetSFXVolume(float volume)
+    public void SetSfxVolume(float volume)
     {
-        SFXVolume = volume;
+        this.SfxVolume = volume;
     }
 
     public void SetVoiceVolume(float volume)
     {
-        VoiceVolume = volume;
+        this.VoiceVolume = volume;
     }
 
     public void SetAmbientVolume(float volume)
     {
-        AmbientVolume = volume;
+        this.AmbientVolume = volume;
     }
 
     public float GetMasterVolume()
     {
-        return MasterVolume;
+        return this.MasterVolume;
     }
 
     public float GetMusicVolume()
     {
-        return MusicVolume;
+        return this.MusicVolume;
     }
 
-    public float GetSFXVolume()
+    public float GetSfxVolume()
     {
-        return SFXVolume;
+        return this.SfxVolume;
     }
 
     public float GetVoiceVolume()
     {
-        return VoiceVolume;
+        return this.VoiceVolume;
     }
 
     public float GetAmbientVolume()
     {
-        return AmbientVolume;
+        return this.AmbientVolume;
+    }
+    
+    public void SetMouseSensitivityX(float sensitivity)
+    {
+        this.MouseSensitivityX = sensitivity;
+    }
+    
+    public void SetMouseSensitivityY(float sensitivity)
+    {
+        this.MouseSensitivityY = sensitivity;
+    }
+    
+    public void SetGamePadSensitivityX(float sensitivity)
+    {
+        this.GamePadSensitivityX = sensitivity;
+    }
+    
+    public void SetGamePadSensitivityY(float sensitivity)
+    {
+        this.GamePadSensitivityY = sensitivity;
+    }
+    
+    public float GetMouseSensitivityX()
+    {
+        return this.MouseSensitivityX;
+    }
+    
+    public float GetMouseSensitivityY()
+    {
+        return this.MouseSensitivityY;
+    }
+    
+    public float GetGamePadSensitivityX()
+    {
+        return this.GamePadSensitivityX;
+    }
+    
+    public float GetGamePadSensitivityY()
+    {
+        return this.GamePadSensitivityY;
     }
 }
