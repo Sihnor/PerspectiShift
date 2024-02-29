@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DimensionGearUI : MonoBehaviour
@@ -7,6 +8,8 @@ public class DimensionGearUI : MonoBehaviour
     [SerializeField] private GameObject HeartOne;
     [SerializeField] private GameObject HeartTwo;
     [SerializeField] private GameObject HeartThree;
+    
+    [SerializeField] private GameObject HelpText;
 
     // Start is called before the first frame update
     private void Start()
@@ -17,6 +20,14 @@ public class DimensionGearUI : MonoBehaviour
         EventManager.Instance.FOnDimensionGearAvailable += SetDimensionGearState;
         EventManager.Instance.FOnDimensionGearPosses += ActivateDimensionGear;
         EventManager.Instance.FOnDamagePlayer += DamagePlayer;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H) || Input.GetKeyDown(KeyCode.JoystickButton7))
+        {
+            this.HelpText.SetActive(!this.HelpText.activeSelf);
+        } 
     }
 
     private void ActivateDimensionGear(bool isAvailable)
@@ -53,7 +64,9 @@ public class DimensionGearUI : MonoBehaviour
         if (this.HeartOne.activeSelf)
         {
             this.HeartOne.SetActive(false);
-            
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneLoader.Instance.LoadScene(ESceneIndices.GameOver);
         }
         
         

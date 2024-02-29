@@ -27,15 +27,5 @@ public class DimensionProtal : MonoBehaviour
         EventManager.Instance.OnDimensionSwitch();
 
         this.TimeForNextSwitch = Time.time + this.Cooldown;
-
-        return;
-        if (this.TeleportPoint != null)
-        {
-            other.gameObject.transform.position = this.TeleportPoint.transform.position;
-        }
-        else
-        {
-            other.gameObject.transform.position = this.transform.position + new Vector3(0,0,0.5f);
-        }
     }
 }
